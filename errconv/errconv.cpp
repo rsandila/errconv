@@ -210,6 +210,7 @@ int main( int argc, char **argv )
 
   cpp=NULL;
   java=NULL;
+  c=NULL;
 
   result=process_arguments( &flag, cout, jout, cnout, infile, argc, argv );
   if (result)
@@ -226,6 +227,7 @@ int main( int argc, char **argv )
 
   if (!err_def->isOk())
     { // Assumes error code has been printed.
+      delete err_def;
       return( 1 );
     }
 
@@ -234,18 +236,22 @@ int main( int argc, char **argv )
       cpp=new CPP_Errors( cout, err_def );
       if (!cpp)
 	{
+	  delete err_def;
 	  fprintf( stderr, "Out of memory.\n" );
           return( 1 );
 	}
       if (!cpp->isOk())
         {
 	  fprintf( stderr, "Unable to initialize CPP Parser.\n" );
+	  delete err_def;
           delete cpp;
           cpp=NULL;
           return( 1 );
 	}
       if (cpp->execute())
         {
+	  delete err_def;
+	  delete cpp;
 	  return( 1 );
 	}
     }
@@ -254,11 +260,16 @@ int main( int argc, char **argv )
       java=new Java_Errors( jout, err_def );
       if (!java)
 	{
+	  delete err_def;
+	  if (cpp) delete cpp;
 	  fprintf( stderr, "Out of memory.\n" );
           return( 1 );
 	}
       if (!java->isOk())
         {
+	  delete err_def;
+	  if (cpp) delete cpp;
+	  delete java;
 	  fprintf( stderr, "Unable to initialize Java Parser.\n" );
           delete cpp;
           cpp=NULL;
@@ -266,6 +277,9 @@ int main( int argc, char **argv )
 	}
       if (java->execute())
         {
+	  delete err_def;
+	  if (cpp) delete cpp;
+	  delete java;
 	  return( 1 );
 	}
     }
@@ -274,11 +288,17 @@ int main( int argc, char **argv )
       c=new C_Errors( cnout, err_def );
       if (!c)
 	{
+	  delete err_def;
+	  if (cpp) delete cpp;
+	  if (java) delete java;
 	  fprintf( stderr, "Out of memory.\n" );
           return( 1 );
 	}
       if (!c->isOk())
         {
+	  delete err_def;
+	  if (cpp) delete cpp;
+	  if (java) delete java;
 	  fprintf( stderr, "Unable to initialize CPP Parser.\n" );
           delete c;
           c=NULL;
@@ -286,6 +306,10 @@ int main( int argc, char **argv )
 	}
       if (c->execute())
         {
+	  delete err_def;
+	  if (cpp) delete cpp;
+	  if (java) delete java;
+	  delete c;
 	  return( 1 );
 	}
     }
