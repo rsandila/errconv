@@ -818,7 +818,7 @@ ALL="$ALL errconv"
 if test "${enable_secureworx+set}" = set; then
   enableval="$enable_secureworx"
   globalerrorsh="include swx_libmak.in"  
-  ALL="$ALL $CVSBASE/java/GlobalErrors.java $CVSBASE/include/globalerrors.h $CVSBASE/lib/libglobalerrors.so errtest"
+  ALL="$ALL $CVSBASE/java/error/SwxErrorErrors.java $CVSBASE/include/globalerrors.h $CVSBASE/lib/libglobalerrors.so errtest"
 fi
 
 

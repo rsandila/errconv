@@ -9,14 +9,14 @@ $(CVSBASE)/lib/libglobalerrors.so: globalerrors.o
 errtest: $(CVSBASE)/lib/libglobalerrors.so errtest.o
 	$(CC) -o errtest errtest.o -L $(CVSBASE)/lib -lglobalerrors
 
-$(CVSBASE)/java/GlobalErrors.java: errconv
-	./errconv --in $(CVSBASE)/Documents/Errors/errors.txt --jout Global --java
-	cp GlobalError.java $(CVSBASE)/java/
-	cp GlobalImpLevel.java $(CVSBASE)/java/
-	cp GlobalResponse.java $(CVSBASE)/java/
-	rm GlobalError.java
-	rm GlobalImpLevel.java
-	rm GlobalResponse.java
+$(CVSBASE)/java/error/SwxErrorErrors.java: errconv
+	./errconv --in $(CVSBASE)/Documents/Errors/errors.txt --jout SwxError --java
+	cp SwxErrorError.java $(CVSBASE)/java/error/
+	cp SwxErrorImpLevel.java $(CVSBASE)/java/error/
+	cp SwxErrorResponse.java $(CVSBASE)/java/error/
+	rm SwxErrorError.java
+	rm SwxErrorImpLevel.java
+	rm SwxErrorResponse.java
 	
 test: errtest
 	./errtest

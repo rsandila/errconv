@@ -18,7 +18,7 @@
 
 #include "errjava.h"
 #include <string.h>
-
+#include <ctype.h>
 
 Java_Errors::Java_Errors( char *out_base, Error_Definitions *err )
 {
@@ -71,7 +71,7 @@ int Java_Errors::Init( char *out_base, Error_Definitions *err )
 
 int Java_Errors::create_files()
 {
-  char levelname[255], responsename[255], errorname[255];
+  char levelname[255], responsename[255], errorname[255], classbase[255];
   char *tmp;
   int count;
   tmp=strrchr( base, '/' );
@@ -80,13 +80,17 @@ int Java_Errors::create_files()
      strcpy( class_error, base );
      strcpy( class_level, base );
      strcpy( class_response, base );
+     strcpy( classbase, base );
     }
   else 
     {
       strcpy( class_error, tmp+1 );
       strcpy( class_level, tmp+1 );
       strcpy( class_response, tmp+1 );
+      strcpy( classbase, tmp+1 );
     }
+  tmp=classbase;
+  while (*tmp) { *tmp=tolower( *tmp ); tmp+=1; };
   strcat( class_error, "Error" );
   strcat( class_level, "ImpLevel" );
   strcat( class_response, "Response" );
@@ -120,19 +124,19 @@ int Java_Errors::create_files()
      out_level=NULL;
      return( 1 ); 
     }; 
-  fprintf( out_response, "package commoncode;\n\n/*\n This code has been automatically generated -- DO NOT EDIT\n*/\n\n" );
+  fprintf( out_response, "package %s;\n\n/*\n This code has been automatically generated -- DO NOT EDIT\n*/\n\n", classbase );
   fprintf( out_response, "public class %s {\n", class_response );
   for (count=0;count<NUM_VALID_RESPONSES;count++)
     fprintf( out_response, "    public static final int %-20s = %d;\n", valid_responses[count], count );
   fprintf( out_response, "\n\n    private final void ErrorResponse() {}\n}\n" );
   
-  fprintf( out_level, "package commoncode;\n\n/*\n This code has been automatically generated -- DO NOT EDIT\n*/\n\n" );
+  fprintf( out_level, "package %s;\n\n/*\n This code has been automatically generated -- DO NOT EDIT\n*/\n\n", classbase );
   fprintf( out_level, "public class %s {\n", class_level );
   for (count=0;count<NUM_VALID_LEVELS;count++)
     fprintf( out_level, "    public static final int %-20s = %d;\n", valid_levels[count], count );
   fprintf( out_level, "\n\n    private final void ErrorImpLevel() {}\n}\n" );
   
-  fprintf( out_error, "package commoncode;\n\nimport java.util.HashMap;\nimport commoncode.*;\n\n/*\n This code has been automatically generated -- DO NOT EDIT\n*/\n\n" );
+  fprintf( out_error, "package %s;\n\nimport java.util.HashMap;\nimport commoncode.*;\n\n/*\n This code has been automatically generated -- DO NOT EDIT\n*/\n\n", classbase );
   fprintf( out_error, "public class %s {\n    private static HashMap errHash=null;\n", class_error );
   return( 0 );
 }
