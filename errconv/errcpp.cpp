@@ -174,14 +174,14 @@ int CPP_Errors::close_files()
   fprintf( out_cpp, "%s::%s()\n{\n}\n\n", classname, classname );
   fprintf( out_cpp, "%s::~%s()\n{\n}\n\n", classname, classname );
   fprintf( out_cpp, "bool %s::ErrorCode_To_Name( int code, char *name, int len )\n", classname );
-  fprintf( out_cpp, "{\n int cnt;\n\n for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n    {\n    if (code==%sS[cnt].code)\n      {\n      if (strlen(%sS[cnt].name)+1>len) return true;\n      strcpy( name, %sS[cnt].name );\n      return false;\n      }\n    }\n  return true;\n}\n\n", ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX );
+  fprintf( out_cpp, "{\n int cnt;\n\n for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n    {\n    if (code==%sS[cnt].code)\n      {\n      if (strlen(%sS[cnt].name)+1>(unsigned)len) return true;\n      strcpy( name, %sS[cnt].name );\n      return false;\n      }\n    }\n  return true;\n}\n\n", ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX );
   fprintf( out_cpp, "bool %s::ErrorCode_To_Level( int code, int *level )\n", classname );
   fprintf( out_cpp, "{\n int cnt;\n\n for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n    {\n    if (code==%sS[cnt].code)\n      {\n       *level=%sS[cnt].level;\n      return false;\n      }\n    }\n  return true;\n}\n\n", ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX );
   fprintf( out_cpp, "bool %s::ErrorCode_To_Response( int code, int *response )\n", classname );
   fprintf( out_cpp, "{\n int cnt;\n\n for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n    {\n    if (code==%sS[cnt].code)\n      {\n       *response=%sS[cnt].response;\n      return false;\n      }\n    }\n  return true;\n}\n\n", ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX );  
   fclose( out_h );
   fprintf( out_cpp, "bool %s::ErrorCode_To_Message( int code, char *message, int len )\n", classname );
-  fprintf( out_cpp, "{\n int cnt;\n\n for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n    {\n    if (code==%sS[cnt].code)\n      {\n      if (strlen(%sS[cnt].message)+1>len) return true;\n      strcpy( message, %sS[cnt].message );\n      return false;\n      }\n    }\n  return true;\n}\n\n", ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX );  
+  fprintf( out_cpp, "{\n int cnt;\n\n for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n    {\n    if (code==%sS[cnt].code)\n      {\n      if (strlen(%sS[cnt].message)+1>(unsigned)len) return true;\n      strcpy( message, %sS[cnt].message );\n      return false;\n      }\n    }\n  return true;\n}\n\n", ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX );  
   out_h=NULL;
   fclose( out_cpp );
   out_cpp=NULL;
