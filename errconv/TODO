@@ -1,0 +1,26 @@
+1. The generated c++ class generates warnings: 
+
+/home/robert/work/lnx_backend/errors/globalerrors.cpp: In function `bool 
+globalerrors_Errors::ErrorCode_To_Name (int, char *, int)':
+/home/robert/work/lnx_backend/errors/globalerrors.cpp:80: warning: comparison between signed and 
+unsigned integer expressions
+
+/home/robert/work/lnx_backend/errors/globalerrors.cpp: In function `bool 
+globalerrors_Errors::ErrorCode_To_Message (int, char *, int)':
+/home/robert/work/lnx_backend/errors/globalerrors.cpp:126: warning: comparison between signed and 
+unsigned integer expressions
+
+2. Change the C++ code generation to generate code in the following format:
+
+	class Errors {
+	public:
+		enum Error_Level {
+			SWX_ERROR_LEVEL_DEBUG = 0,
+			// etc.
+		};
+		enum Error_Response {
+			SWX_ERROR_RESPONSE_IGNORE = 0,
+			// etc.
+		};
+	};
+
