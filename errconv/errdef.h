@@ -28,7 +28,7 @@
 //! The number of error response parameters that is valid
 #define NUM_VALID_RESPONSES 6
 //! The prefix used for error names
-#define ERROR_PREFIX        "SWX_ERROR"
+#define ERROR_PREFIX        "ERROR"
 
 extern char *valid_levels[NUM_VALID_LEVELS];
 extern char *valid_responses[NUM_VALID_RESPONSES];

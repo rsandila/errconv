@@ -1,3 +1,6 @@
+Changes between 1.2.2 and 1.2.3 [13 June 2003]
+ - Made it build under Mac OS X. No i10n support for Mac OS X.
+ 
 Changes between 1.2.2 and 1.2.2 [3 May 2002]
  - Fixed some boolean values that should be integers.
  - Added i10n support.
