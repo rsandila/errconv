@@ -97,6 +97,11 @@ int CPP_Errors::create_files()
      out_cpp=NULL; 
      return( 1 ); 
     };
+/*
+"const int" is used for the constants below rather that "const unsigned"
+as mightt expect given the  for compatibility with Java which does not
+support unsigned. Using signed everywhere simplifies life.
+*/
   fprintf( out_h, "#ifndef %s_H__\n#define %s_H__\n", classname, classname );
   fprintf( out_h, "\n\n/* This file has been automatically generated -- DO NOT EDIT */\n\n" );
   fprintf( out_h, "class %s\n{\npublic:\n  %s();\n  virtual ~%s();\n", classname, classname, classname );
@@ -107,11 +112,11 @@ int CPP_Errors::create_files()
   fprintf( out_h, "protected:\nprivate:\n};\n\n\n" );
   fprintf( out_h, "struct error_defs\n{\n int code;\n char *name;\n int level;\n int response;\n char *message;\n};\n\n" );
   for (count=0;count<NUM_VALID_LEVELS;count++)
-    fprintf( out_h, "#define %s_LEVEL_%-20s        0x0%08X\n", ERROR_PREFIX, valid_levels[count], count );
+    fprintf( out_h, "const int %s_LEVEL_%-20s        = 0x0%08X;\n", ERROR_PREFIX, valid_levels[count], count );
   fprintf( out_h, "\n" );
   for (count=0;count<NUM_VALID_RESPONSES;count++)
-    fprintf( out_h, "#define %s_RESPONSE_%-20s     0x0%08X\n", ERROR_PREFIX, valid_responses[count], count );
-  fprintf( out_h, "\n\n#define %s_NUM_ERROR           %d\n\n", ERROR_PREFIX, errdef->NumberOfErrors() );
+    fprintf( out_h, "const int %s_RESPONSE_%-20s     = 0x0%08X;\n", ERROR_PREFIX, valid_responses[count], count );
+  fprintf( out_h, "\n\nconst int %s_NUM_ERROR           = %d;\n\n", ERROR_PREFIX, errdef->NumberOfErrors() );
   fprintf( out_cpp, "#include \"%s\"\n", hname );
   fprintf( out_cpp, "#include <string.h>\n\n" );
   fprintf( out_cpp, "\n\n/* This file has been automatically generated -- DO NOT EDIT */\n\n" );
@@ -159,7 +164,7 @@ int CPP_Errors::parse_errors()
       if (!message)
         {
 	}
-      fprintf( out_h, "#define %s_%-20s         0x%08X\n", ERROR_PREFIX, name, code );
+      fprintf( out_h, "const int %s_%-20s         = 0x%08X;\n", ERROR_PREFIX, name, code );
       fprintf( out_cpp, "   { %s_%-20s, \"%s\", %d, %d, %s }", ERROR_PREFIX, name, name, level, response, message );
       if ((cnt1+1)<errdef->NumberOfErrors()) fprintf( out_cpp, ",\n" );
       else fprintf( out_cpp, "\n" );
