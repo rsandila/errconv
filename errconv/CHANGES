@@ -1,3 +1,15 @@
+Changes between 1.2.0 and 1.2.1 [28 June 2001]
+ - Fixed bug with C code generation core dumping.
+ - Fixed some memory leakes.
+ - Changed the C++ class definition so that it returns bool's.
+
+Changes between 1.1.1 and 1.2.0 [??]
+ - Changed Java code generation. Class names and file names now depend on
+   the supplied base name.
+
+Changes between 1.1.0 and 1.1.1 [??]
+ - Added GPL license to all files.
+
 Changes between 1.0.0 and 1.1.0 [9 March 2001]
 
  - Added autoconf/configure support which should fix the getopt_long issue.

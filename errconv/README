@@ -48,7 +48,11 @@ Maintainer
 This project is maintained by Robert Sandilands from SecureWorx South Africa
 (Pty) Ltd. My e-mail address is robert@secureworx.com. The Java definitions
 was done by Andries Malan from SecureWorx and his e-mail address is
-andries@secureworx.com.
+andries@secureworx.com. 
+
+Additional contributors:
+
+  Adam D. Burry [aburry@igotechnologies.com]
 
 Usage
 ~~~~~
@@ -159,5 +163,7 @@ license.txt         - The GNU Public License applicable to this code but not
 
 Last Changed
 ~~~~~~~~~~~~
+1.2.1 - 28 June 2001 by Robert Sandilands and Adam Burry.
+1.2.0 - 27 June 2001 by Robert Sandilands.
 1.1.0 - 9 March 2001 by Robert Sandilands.
 1.0.0 - 6 March 2001 by Robert Sandilands.
