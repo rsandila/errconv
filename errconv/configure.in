@@ -16,12 +16,5 @@ AC_CHECK_HEADERS(unistd.h)
 AC_SUBST(ALL)
 ALL="$ALL errconv"
 
-dnl with-option-secureworx
-AC_SUBST(globalerrorsh)
-AC_SUBST(CVSBASE) 
-AC_ARG_ENABLE( secureworx, "SecureWorx",
-  globalerrorsh="include swx_libmak.in"  
-  ALL="$ALL $CVSBASE/java/error/SwxErrorErrors.java $CVSBASE/include/globalerrors.h $CVSBASE/lib/libglobalerrors.so errtest",  )
-
 dnl Finalize output
 AC_OUTPUT(Makefile)

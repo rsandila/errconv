@@ -105,10 +105,10 @@ support unsigned. Using signed everywhere simplifies life.
   fprintf( out_h, "#ifndef %s_H__\n#define %s_H__\n", classname, classname );
   fprintf( out_h, "\n\n/* This file has been automatically generated -- DO NOT EDIT */\n\n" );
   fprintf( out_h, "class %s\n{\npublic:\n  %s();\n  virtual ~%s();\n", classname, classname, classname );
-  fprintf( out_h, "  static bool ErrorCode_To_Name( int code, char *name, int len );\n" );
-  fprintf( out_h, "  static bool ErrorCode_To_Level( int code, int *level );\n" );
-  fprintf( out_h, "  static bool ErrorCode_To_Response( int code, int *response );\n" );
-  fprintf( out_h, "  static bool ErrorCode_To_Message( int code, char *message, int len );\n" );
+  fprintf( out_h, "  static unsigned int ErrorCode_To_Name( int code, char *name, int len );\n" );
+  fprintf( out_h, "  static unsigned int ErrorCode_To_Level( int code, int *level );\n" );
+  fprintf( out_h, "  static unsigned int ErrorCode_To_Response( int code, int *response );\n" );
+  fprintf( out_h, "  static unsigned int ErrorCode_To_Message( int code, char *message, int len );\n" );
   fprintf( out_h, "protected:\nprivate:\n};\n\n\n" );
   fprintf( out_h, "struct error_defs\n{\n int code;\n char *name;\n int level;\n int response;\n char *message;\n};\n\n" );
   for (count=0;count<NUM_VALID_LEVELS;count++)
@@ -178,14 +178,14 @@ int CPP_Errors::close_files()
   fprintf( out_h, "\n\n#endif\n" );
   fprintf( out_cpp, "%s::%s()\n{\n}\n\n", classname, classname );
   fprintf( out_cpp, "%s::~%s()\n{\n}\n\n", classname, classname );
-  fprintf( out_cpp, "bool %s::ErrorCode_To_Name( int code, char *name, int len )\n", classname );
+  fprintf( out_cpp, "unsigned int %s::ErrorCode_To_Name( int code, char *name, int len )\n", classname );
   fprintf( out_cpp, "{\n int cnt;\n\n for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n    {\n    if (code==%sS[cnt].code)\n      {\n      if (strlen(%sS[cnt].name)+1>(unsigned)len) return true;\n      strcpy( name, %sS[cnt].name );\n      return false;\n      }\n    }\n  return true;\n}\n\n", ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX );
-  fprintf( out_cpp, "bool %s::ErrorCode_To_Level( int code, int *level )\n", classname );
+  fprintf( out_cpp, "unsigned int %s::ErrorCode_To_Level( int code, int *level )\n", classname );
   fprintf( out_cpp, "{\n int cnt;\n\n for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n    {\n    if (code==%sS[cnt].code)\n      {\n       *level=%sS[cnt].level;\n      return false;\n      }\n    }\n  return true;\n}\n\n", ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX );
-  fprintf( out_cpp, "bool %s::ErrorCode_To_Response( int code, int *response )\n", classname );
+  fprintf( out_cpp, "unsigned int %s::ErrorCode_To_Response( int code, int *response )\n", classname );
   fprintf( out_cpp, "{\n int cnt;\n\n for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n    {\n    if (code==%sS[cnt].code)\n      {\n       *response=%sS[cnt].response;\n      return false;\n      }\n    }\n  return true;\n}\n\n", ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX );  
   fclose( out_h );
-  fprintf( out_cpp, "bool %s::ErrorCode_To_Message( int code, char *message, int len )\n", classname );
+  fprintf( out_cpp, "unsigned int %s::ErrorCode_To_Message( int code, char *message, int len )\n", classname );
   fprintf( out_cpp, "{\n int cnt;\n\n for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n    {\n    if (code==%sS[cnt].code)\n      {\n      if (strlen(%sS[cnt].message)+1>(unsigned)len) return true;\n      strcpy( message, %sS[cnt].message );\n      return false;\n      }\n    }\n  return true;\n}\n\n", ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX );  
   out_h=NULL;
   fclose( out_cpp );
