@@ -6,15 +6,18 @@
 #include "errdef.h"
 #include "errcpp.h"
 #include "errjava.h"
+#include "errc.h"
 
 /*! \brief This program converts an error file definition into the needed C++ and Java classes to be used by other programs
 
     The parameters to be passed to this program is:
-       --c++ - Generate C++ class
-       --java - Generate Java class
+       --c++ - Generate C++ class.
+       --java - Generate Java class.
        --cout - Output base for C++ class.
        --jout - Output base for Java class.
        --in - The errorcode definition file.
+       --c    - Generate C functions.
+       --cnout - Output base for C files.
 
     The program will process the input file and generate the required output files. The definition of the
     input file is: Documents/Errors/defintion.rtf
@@ -31,6 +34,8 @@
 #define ERRCONV_C_OUT     1
 //! This means there should be a Java output
 #define ERRCONV_JAVA_OUT  2
+//! This means there should be a C output
+#define ERRCONV_CN_OUT    4
 
 //--------------------------------------------------------------------------------------------------------------------
 //                             Non - class functions
@@ -55,6 +60,8 @@ int show_help_and_exit( char *reason, char *program_name )
   fprintf( stderr, "      --java  - Generate Java files. Requires that --jout be specified.\n" );
   fprintf( stderr, "      --cout  - The base name used for generating the C++ file names.\n" );
   fprintf( stderr, "      --jout  - The base name used for generating the Java file names.\n" );
+  fprintf( stderr, "      --c     - Generate C files. Requires that --cnout be specified.\n" );
+  fprintf( stderr, "      --cnout - The base name used for generating the C file names.\n" );
   fprintf( stderr, "      --help  - This screen.\n\n" );
   if (reason) return( 1 );
   else return( 0 );
@@ -66,6 +73,7 @@ int show_help_and_exit( char *reason, char *program_name )
     \param flag This variable contains the flag type settings.
     \param cout The base name of the C++ output file as specified on the command line.
     \param jout The base name of the Java output file as specified on the command line.
+    \param cnout The base name of the C output file as specified on the command line.
     \param infile The name of the input file with the error definitions.
     \param argc The argument counter for the command line.
     \param argv The array containing the command line.
@@ -75,7 +83,7 @@ int show_help_and_exit( char *reason, char *program_name )
     It depends on the ERRCONV_* conditional defines and the command line parameters as 
     defined for this program.
  */
-int process_arguments( int *flag, char cout[255], char jout[255], char infile[255], int argc, char **argv )
+int process_arguments( int *flag, char cout[255], char jout[255], char cnout[255], char infile[255], int argc, char **argv )
 {
   int arg_counter, option, option_index; 
   struct option my_options[]=
@@ -85,6 +93,8 @@ int process_arguments( int *flag, char cout[255], char jout[255], char infile[25
     { "cout", 1, NULL, 3 },
     { "jout", 1, NULL, 4 },
     { "in", 1, NULL, 5 },
+    { "c", 0, NULL, 7 },
+    { "cnout", 1, NULL, 8 },
     { "help", 0, NULL, 6 },
     { NULL, 0, NULL, 0 }
    };
@@ -95,6 +105,7 @@ int process_arguments( int *flag, char cout[255], char jout[255], char infile[25
   infile[0]=0;
   cout[0]=0;
   jout[0]=0;
+  cnout[0]=0;
   opterr=0;
   while (1) 
     {
@@ -117,6 +128,10 @@ int process_arguments( int *flag, char cout[255], char jout[255], char infile[25
 	  {
 	    return( show_help_and_exit( "Java base name not specified.", argv[0] ) );
 	  }
+	if (((*flag)&ERRCONV_CN_OUT) && cnout[0]==0)
+	  {
+	    return( show_help_and_exit( "C base name not specified.", argv[0] ) );
+	  }
         return( 0 );
       }
      switch (option)
@@ -138,6 +153,12 @@ int process_arguments( int *flag, char cout[255], char jout[255], char infile[25
         break;
       case 6: // help
 	return( show_help_and_exit( NULL, argv[0] ) );
+      case 7: // c
+	(*flag)|=ERRCONV_CN_OUT;
+	break;
+      case 8: // cnout
+	strcpy( cnout, optarg );
+	break;
       default:
 	return( show_help_and_exit( "Invalid command line option.", argv[0] ) );
       };
@@ -163,15 +184,16 @@ int main( int argc, char **argv )
 {
   int result;
   int flag;
-  char cout[255], jout[255], infile[255];
+  char cout[255], jout[255], infile[255], cnout[255];
   Error_Definitions *err_def;
   CPP_Errors *cpp;
   Java_Errors *java;
+  C_Errors *c;
 
   cpp=NULL;
   java=NULL;
 
-  result=process_arguments( &flag, cout, jout, infile, argc, argv );
+  result=process_arguments( &flag, cout, jout, cnout, infile, argc, argv );
   if (result)
     { // Assumes error code has been printed.
       return( 1 );
@@ -229,10 +251,32 @@ int main( int argc, char **argv )
 	  return( 1 );
 	}
     }
+  if (flag&ERRCONV_CN_OUT)
+    {
+      c=new C_Errors( cnout, err_def );
+      if (!c)
+	{
+	  fprintf( stderr, "Out of memory.\n" );
+          return( 1 );
+	}
+      if (!c->isOk())
+        {
+	  fprintf( stderr, "Unable to initialize CPP Parser.\n" );
+          delete c;
+          c=NULL;
+          return( 1 );
+	}
+      if (c->execute())
+        {
+	  return( 1 );
+	}
+    }
   if (cpp) delete cpp;
   cpp=NULL;
   if (java) delete java;
   java=NULL;
+  if (c) delete c;
+  c=NULL;
   delete err_def;
   err_def=NULL;
   return( 0 );

@@ -1,0 +1,23 @@
+$(CVSBASE)/include/globalerrors.h: errconv $(CVSBASE)/Documents/Errors/errors.txt
+	./errconv --in $(CVSBASE)/Documents/Errors/errors.txt --cout globalerrors --c++
+	cp globalerrors.h $(CVSBASE)/include/globalerrors.h
+
+$(CVSBASE)/lib/libglobalerrors.so: globalerrors.o
+#	$(CC) -c -o globalerrors.o globalerrors.cpp
+	$(LD) -o $(CVSBASE)/lib/libglobalerrors.so -Bdynamic -shared globalerrors.o
+
+errtest: $(CVSBASE)/lib/libglobalerrors.so errtest.o
+	$(CC) -o errtest errtest.o -L $(CVSBASE)/lib -lglobalerrors
+
+$(CVSBASE)/java/GlobalErrors.java: errconv
+	./errconv --in $(CVSBASE)/Documents/Errors/errors.txt --jout Global --java
+	cp GlobalError.java $(CVSBASE)/java/
+	cp GlobalImpLevel.java $(CVSBASE)/java/
+	cp GlobalResponse.java $(CVSBASE)/java/
+	rm GlobalError.java
+	rm GlobalImpLevel.java
+	rm GlobalResponse.java
+	
+test: errtest
+	./errtest
+

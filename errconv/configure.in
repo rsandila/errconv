@@ -1,0 +1,27 @@
+dnl Process this file with autoconf to produce the configure script
+AC_INIT(errconv.cpp)
+
+dnl Check for programs.
+AC_PROG_CPP
+
+dnl check for getopt in standard library
+AC_SUBST(ERRCONVOBJ)
+ERRCONVOBJ="$ERRCONVOJB errconv.o errdef.o errcpp.o errjava.o errc.o"
+AC_CHECK_FUNCS(getopt_long , , [ERRCONVOBJ="$ERRCONVOBJ getopt.o getopt1.o"] ) 
+
+dnl Check for header files
+AC_HEADER_STDC
+AC_CHECK_HEADERS(unistd.h)
+
+AC_SUBST(ALL)
+ALL="$ALL errconv"
+
+dnl with-option-secureworx
+AC_SUBST(globalerrorsh)
+AC_SUBST(CVSBASE) 
+AC_ARG_ENABLE( secureworx, "SecureWorx",
+  globalerrorsh="include swx_libmak.in"  
+  ALL="$ALL $CVSBASE/java/GlobalErrors.java $CVSBASE/include/globalerrors.h $CVSBASE/lib/libglobalerrors.so errtest",  )
+
+dnl Finalize output
+AC_OUTPUT(Makefile)

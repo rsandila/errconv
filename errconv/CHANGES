@@ -1,0 +1,6 @@
+Changes between 1.0.0 and 1.1.0 [9 March 2001]
+
+ - Added autoconf/configure support which should fix the getopt_long issue.
+    To fully solve the issue download http://www.gnu.org/software/gengetopt/.
+    Thanks to Thanh.Ma@casi-rusco.com.
+ - Added C support to the package.

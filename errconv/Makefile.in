@@ -1,13 +1,16 @@
 
-ERRCONVOBJ = errconv.o errdef.o errcpp.o errjava.o
+ERRCONVOBJ = @ERRCONVOBJ@ 
 CFLAGS = -g
 CPPFLAGS = -g
-ALL = errconv 
+
+ALL = @ALL@
 
 all: $(ALL)
 
 errconv: $(ERRCONVOBJ)
 	$(CC) -o errconv $(ERRCONVOBJ)
+
+@globalerrorsh@
 
 clean:
 	-rm -f $(ALL) *.o *~ core
