@@ -1,0 +1,1098 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+# File: errconv.cpp, line: 134
+# File: errconv.cpp, line: 219
+msgid ""
+msgstr ""
+"Project-Id-Version: errconv 0.0.3\n"
+"POT-Creation-Date: 2002-05-03 10:29+0200\n"
+"PO-Revision-Date: 2002-05-03 10:29+0200\n"
+"Last-Translator: Robert Sandilands <rsandila@netscape.net>\n"
+"Language-Team: Afrikaans <rsandila@netscape.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+msgid ""
+"\n"
+"\n"
+"    private final void ErrorResponse() {}\n"
+"}\n"
+msgstr ""
+"\n"
+"\n"
+"    private final void FoutReaksie() {}\n"
+"}\n"
+#
+# File: errc.cpp, line: 112
+#, c-format
+msgid ""
+"\n"
+"\n"
+"#define %s_NUM_ERROR          %d\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"#define %1$s_NUM_ERROR         %2$d\n"
+"\n"
+
+msgid ""
+"\n"
+"\n"
+"/* This file has been automatically generated -- DO NOT EDIT */\n"
+"\n"
+msgstr ""
+"\n\n"
+"\n\n"
+"/* Die lêer is automaties gegenereer -- Moenie verander nie!!! */\n\n"
+"\n\n"
+#
+# File: errcpp.cpp, line: 119
+#, c-format
+msgid ""
+"\n"
+"\n"
+"const int %s_NUM_ERROR           = %d;\n"
+"\n"
+msgstr "\n\nconst int %1$s_HOEFEELHEID_FOUTE = %2$d;\n\n"
+#
+# File: errjava.cpp, line: 168
+#, c-format
+msgid ""
+"\n"
+"\n"
+"public static String getErrorString(int errcode) {\n"
+"  try {\n"
+"     return ((ErrorObj)(errHash.get(new Integer(errcode)))).description;\n"
+"  }\n"
+" catch (Exception e) {\n"
+"     return new String( \"Unknown Error Occured\" );\n"
+"  }\n"
+"}\n"
+"\n"
+"\n"
+"private %s() {\n"
+" }\n"
+"}\n"
+msgstr ""
+"\n"
+"\n"
+"public static String kryFoutBeskrywing(int fout_kode) {\n"
+"  try {\n"
+"    return ((FoutOnderwerp)(foutHash.get(new Integer(fout_kode)))).beskrywing;\n"
+"  }\n"
+" catch (Exception e) {\n"
+"     return new String( \"Onbekende Fout Het Gebeur\" );\n"
+"  }\n"
+"}\n"
+"\n"
+"\n"
+"private %s() {\n"
+" }\n"
+"}\n"
+#
+# File: errjava.cpp, line: 151
+msgid ""
+"\n"
+"\n"
+"public static void initHashMap() {\n"
+" try {\n"
+"    errHash=new HashMap( 150 );\n"
+msgstr ""
+"\n"
+"\n"
+"public static void beginHashKaart() {\n"
+" try {\n"
+"    foutHash=new HashMap( 150 );\n"
+#
+# File: errconv.cpp, line: 78
+#, c-format
+msgid ""
+"\n"
+"%s\n"
+"\n"
+msgstr ""
+"\n"
+"%1$s\n"
+"\n"
+#
+# File: errconv.cpp, line: 85
+msgid "      --c     - Generate C files. Requires that --cnout be specified.\n"
+msgstr "      --c     - Genereer C lêers. --cnout moet ook gespesifiseer word.\n"
+#
+# File: errconv.cpp, line: 81
+msgid ""
+"      --c++   - Generate C++ files. Requires that --cout be specified.\n"
+msgstr ""
+"      --c++   - Genereer C++ lêers. --cout moet ook gespesifiseer word.\n"
+#
+# File: errconv.cpp, line: 86
+msgid "      --cnout - The base name used for generating the C file names.\n"
+msgstr "      --cnout - Die basis naam vir die gegenereerde C lêers.\n"
+#
+# File: errconv.cpp, line: 83
+msgid "      --cout  - The base name used for generating the C++ file names.\n"
+msgstr "      --cout  - Die basis naam vir die gegenereerde C++ lêers.\n"
+#
+# File: errconv.cpp, line: 87
+msgid ""
+"      --help  - This screen.\n"
+"\n"
+msgstr ""
+"      --help  - Die skerm.\n"
+"\n"
+#
+# File: errconv.cpp, line: 80
+msgid "      --in    - The error definition input file.\n"
+msgstr "      --in    - Die fout boodskap definisie lêer.\n"
+#
+# File: errconv.cpp, line: 82
+msgid ""
+"      --java  - Generate Java files. Requires that --jout be specified.\n"
+msgstr "      --java  - Genereer Java lêers. --jout moet gespesifiseer word.\n"
+#
+# File: errconv.cpp, line: 84
+msgid ""
+"      --jout  - The base name used for generating the Java file names.\n"
+msgstr "      --jout  - Die basis naam vir die gegenereerde Java lêers.\n"
+#
+# File: errjava.cpp, line: 154
+#, c-format
+msgid ""
+"    errHash.put(new Integer(%s), new ErrorObj(%s.%s, %s.%s, new "
+"String(%s)));\n"
+msgstr ""
+"    foutHash.put(new Integer(%1$s), new FoutVoorwerp(%2$s.%3$s, %4$s.%5$s, new "
+"String(%6$s)));\n"
+#
+# File: errjava.cpp, line: 130
+# File: errjava.cpp, line: 136
+#, c-format
+msgid "    public static final int %-20s = %d;\n"
+msgstr "    public static final int %-20s = %d;\n"
+#
+# File: errjava.cpp, line: 149
+#, c-format
+msgid "    public static final int %-20s=%d;\n"
+msgstr "    public static final int %-20s=%d;\n"
+#
+# File: errc.cpp, line: 161
+#, c-format
+msgid "   { %d, \"%s\", %d, %d, %s }"
+msgstr "   { %d, \"%s\", %d, %d, %s }"
+#
+# File: errcpp.cpp, line: 168
+#, c-format
+msgid "   { %s_%-20s, \"%s\", %d, %d, %s }"
+msgstr "   { %s_%-20s, \"%s\", %d, %d, %s }"
+#
+# File: errc.cpp, line: 103
+#, c-format
+msgid "  int %sErrorCode_To_Level( int code, int *level );\n"
+msgstr "  int %sFoutKode_Na_Vlak( int fout_kode, int *vlak );\n"
+#
+# File: errc.cpp, line: 105
+#, c-format
+msgid ""
+"  int %sErrorCode_To_Message( int code, char *message, int len );\n"
+"\n"
+"\n"
+msgstr ""
+"  int %sFoutKode_Na_Boodskap( int kode, char *boodskap, int lengte );\n"
+"\n"
+"\n"
+#
+# File: errc.cpp, line: 102
+#, c-format
+msgid "  int %sErrorCode_To_Name( int code, char *name, int len );\n"
+msgstr "  int %sFoutKode_Na_Naam( int kode, char *naam, int lengte );\n"
+#
+# File: errc.cpp, line: 104
+#, c-format
+msgid "  int %sErrorCode_To_Response( int code, int *response );\n"
+msgstr "  int %sFoutKode_Na_Reaksie( int kode, int *reaksie );\n"
+#
+# File: errcpp.cpp, line: 109
+msgid "  static unsigned int ErrorCode_To_Level( int code, int *level );\n"
+msgstr "  static unsigned int FoutKode_Na_Vlak( int kode, int *vlak );\n"
+#
+# File: errcpp.cpp, line: 111
+msgid ""
+"  static unsigned int ErrorCode_To_Message( int code, char *message, int len "
+");\n"
+msgstr ""
+"  static unsigned int FoutKode_Na_Boodskap( int kode, char *boodskap, int lengte "
+");\n"
+#
+# File: errcpp.cpp, line: 108
+msgid ""
+"  static unsigned int ErrorCode_To_Name( int code, char *name, int len );\n"
+msgstr ""
+"  static unsigned int FoutKode_Na_Naam( int kode, char *naam, int lengte );\n"
+#
+# File: errcpp.cpp, line: 110
+msgid ""
+"  static unsigned int ErrorCode_To_Response( int code, int *response );\n"
+msgstr ""
+"  static unsigned int FoutKode_Na_Reaksie( int kode, int *reaksie );\n"
+#
+# File: errjava.cpp, line: 167
+msgid ""
+"  } catch (Exception e) {\n"
+"    errHash=null;\n"
+"  }\n"
+"}\n"
+msgstr ""
+"  } catch (Exception e) {\n"
+"    errHash=null;\n"
+"  }\n"
+"}\n"
+#
+# File: errc.cpp, line: 160
+#, c-format
+msgid "#define %s_%-20s        0x%08X\n"
+msgstr "#define %s_%-20s        0x%08X\n"
+#
+# File: errc.cpp, line: 108
+#, c-format
+msgid "#define %s_LEVEL_%-20s       0x0%08X\n"
+msgstr "#define %s_VLAK_%-20s       0x0%08X\n"
+#
+# File: errc.cpp, line: 111
+#, c-format
+msgid "#define %s_RESPONSE_%-20s    0x0%08X\n"
+msgstr "#define %s_REAKSIE_%-20s    0x0%08X\n"
+#
+# File: errc.cpp, line: 100
+# File: errcpp.cpp, line: 105
+#, c-format
+msgid ""
+"#ifndef %s_H__\n"
+"#define %s_H__\n"
+msgstr ""
+"#ifndef %s_H__\n"
+"#define %s_H__\n"
+#
+# File: errc.cpp, line: 113
+# File: errcpp.cpp, line: 120
+#, c-format
+msgid "#include \"%s\"\n"
+msgstr "#include \"%s\"\n"
+#
+# File: errc.cpp, line: 114
+# File: errcpp.cpp, line: 121
+msgid ""
+"#include <string.h>\n"
+"\n"
+msgstr ""
+"#include <string.h>\n"
+"\n"
+#
+# File: errconv.cpp, line: 221
+# File: errconv.cpp, line: 222
+#, c-format
+msgid "%s %s compiled on %s, %s\n"
+msgstr "%1$s %2$s saamgestel op %3$s, %4$s\n"
+#
+# File: errcpp.cpp, line: 179
+#, c-format
+msgid ""
+"%s::%s()\n"
+"{\n"
+"}\n"
+"\n"
+msgstr ""
+"%s::%s()\n"
+"{\n"
+"}\n"
+"\n"
+#
+# File: errcpp.cpp, line: 180
+#, c-format
+msgid ""
+"%s::~%s()\n"
+"{\n"
+"}\n"
+"\n"
+msgstr ""
+"%s::~%s()\n"
+"{\n"
+"}\n"
+"\n"
+#
+# File: errc.cpp, line: 162
+# File: errcpp.cpp, line: 169
+msgid ",\n"
+msgstr ",\n"
+#
+# File: errconv.cpp, line: 220
+msgid "."
+msgstr "."
+#
+# File: errc.cpp, line: 83
+msgid ".c"
+msgstr ".c"
+#
+# File: errcpp.cpp, line: 83
+msgid ".cpp"
+msgstr ".cpp"
+#
+# File: errc.cpp, line: 85
+# File: errcpp.cpp, line: 85
+msgid ".h"
+msgstr ".h"
+#
+# File: errdef.cpp, line: 153
+# File: errdef.cpp, line: 167
+# File: errdef.cpp, line: 180
+# File: errdef.cpp, line: 196
+# File: errdef.cpp, line: 212
+msgid ":"
+msgstr ":"
+#
+# File: errdef.cpp, line: 44
+msgid "ABORT"
+msgstr "ABORTEER"
+#
+# File: errdef.cpp, line: 33
+# File: errdef.cpp, line: 41
+msgid "ALERT"
+msgstr "WAARSKU"
+#
+# File: errconv.cpp, line: 155
+msgid "C base name not specified."
+msgstr "C basis naam nie gespesifiseer nie."
+#
+# File: errconv.cpp, line: 147
+msgid "C++ base name not specified."
+msgstr "C++ basis naam nie gespesifiseer nie."
+#
+# File: errdef.cpp, line: 32
+msgid "CRIT"
+msgstr "KRITIEK"
+#
+# File: errc.cpp, line: 41
+# File: errcpp.cpp, line: 41
+# File: errjava.cpp, line: 45
+msgid "Class did not initialize properly.\n"
+msgstr "Klas het nie ordentelik begin nie.\n"
+#
+# File: errdef.cpp, line: 27
+msgid "DEBUG"
+msgstr "DEBUG"
+#
+# File: errdef.cpp, line: 34
+msgid "EMERG"
+msgstr "REGTIGKRITIEK"
+#
+# File: errdef.cpp, line: 31
+msgid "ERR"
+msgstr "FOUT"
+#
+# File: errdef.cpp, line: 177
+#, c-format
+msgid "Entries %d and %d have identical error codes.\n"
+msgstr "Inskrywings %1$d en %2$d het identiese fout kodes.\n"
+#
+# File: errdef.cpp, line: 164
+#, c-format
+msgid "Entries %d and %d have identical names: %s\n"
+msgstr "Inskrywings %1$d en %2$d het identiese name: %3$s\n"
+#
+# File: errjava.cpp, line: 94
+msgid "Error"
+msgstr "Fout"
+#
+# File: errjava.cpp, line: 98
+msgid "Error.java"
+msgstr "Fout.java"
+#
+# File: errdef.cpp, line: 42
+msgid "FALLOVER"
+msgstr "PROBEERANDER"
+#
+# File: errdef.cpp, line: 104
+#, c-format
+msgid "File %s contains %d lines.\n"
+msgstr "Lêer %1$s het %2$d lyne in.\n"
+#
+# File: errdef.cpp, line: 125
+msgid "File seems to have grown???\n"
+msgstr "Lêer het groter geword???\n"
+#
+# File: errtest.cpp, line: 60
+#, c-format
+msgid ""
+"For Errorcode 3 the following is true:\n"
+" Name=%s, Level=%d, Response=%d, Message=%s\n"
+msgstr ""
+"Vir Foutkode 3, is die volgende waar:\n"
+" Naam=%1$s, Vlak=%2$d. Reaksie=%3$d, Boodskap=%4$s\n"
+#
+# File: errdef.cpp, line: 40
+msgid "IGNORE"
+msgstr "IGNOREER"
+#
+# File: errdef.cpp, line: 28
+msgid "INFO"
+msgstr "INLIGTING"
+#
+# File: errjava.cpp, line: 95
+msgid "ImpLevel"
+msgstr "ImpVlak"
+#
+# File: errjava.cpp, line: 100
+msgid "ImpLevel.java"
+msgstr "ImpVlak.java"
+#
+# File: errconv.cpp, line: 185
+msgid "Invalid command line option."
+msgstr "Ongeldige opsie gegee."
+#
+# File: errdef.cpp, line: 156
+# File: errdef.cpp, line: 170
+# File: errdef.cpp, line: 183
+# File: errdef.cpp, line: 199
+# File: errdef.cpp, line: 215
+#, c-format
+msgid "Invalid formatted string: %d\n"
+msgstr "Ongeldige geformateerde inligting: %d\n"
+#
+# File: errdef.cpp, line: 193
+#, c-format
+msgid "Invalid level %s specified in line %d\n"
+msgstr "Ongeldige vlak %1$s gespesifiseer in lyn %2$d\n"
+#
+# File: errdef.cpp, line: 209
+#, c-format
+msgid "Invalid response %s specified in line %d\n"
+msgstr "Ongeldige reaksie %1$s gespesifiseer op lyn %2$d\n"
+#
+# File: errconv.cpp, line: 151
+msgid "Java base name not specified."
+msgstr "Java basis naam nie gespesifiseer nie."
+#
+# File: errdef.cpp, line: 29
+msgid "NOTICE"
+msgstr "KYKHIER"
+#
+# File: errconv.cpp, line: 143
+msgid "No input file defined."
+msgstr "Geen inset lêer gespesifiseer."
+#
+# File: errconv.cpp, line: 139
+msgid "No output type defined."
+msgstr "Geen uitset lêer gespesifiseer."
+#
+# File: errconv.cpp, line: 124
+msgid "No parameters defined."
+msgstr "Geen parameters gespesifiseer."
+#
+# File: errdef.cpp, line: 89
+#, c-format
+msgid "No read access to %s\n"
+msgstr "Kan nie %s lees nie\n"
+#
+# File: errdef.cpp, line: 112
+msgid "Out of memory allocating objects.\n"
+msgstr "Kan nie meer goed onthou nie.\n"
+#
+# File: errconv.cpp, line: 231
+# File: errconv.cpp, line: 232
+# File: errconv.cpp, line: 247
+# File: errconv.cpp, line: 248
+# File: errconv.cpp, line: 272
+# File: errconv.cpp, line: 273
+# File: errconv.cpp, line: 301
+# File: errconv.cpp, line: 302
+# File: errdef.cpp, line: 226
+msgid "Out of memory.\n"
+msgstr "Kan nie onthou nie.\n"
+#
+# File: errdef.cpp, line: 45
+msgid "PANIC"
+msgstr "PANIEK"
+#
+# File: errdef.cpp, line: 43
+msgid "RETRY"
+msgstr "PROBEERWEER"
+#
+# File: errjava.cpp, line: 96
+msgid "Response"
+msgstr "Reaksie"
+#
+# File: errjava.cpp, line: 102
+msgid "Response.java"
+msgstr "Reaksie.java"
+#
+# File: errc.cpp, line: 59
+# File: errcpp.cpp, line: 59
+# File: errjava.cpp, line: 64
+msgid "The base name is too long.\n"
+msgstr "Die basis naam is te lank.\n"
+#
+# File: errc.cpp, line: 89
+# File: errc.cpp, line: 95
+# File: errcpp.cpp, line: 89
+# File: errcpp.cpp, line: 95
+# File: errjava.cpp, line: 106
+# File: errjava.cpp, line: 112
+# File: errjava.cpp, line: 120
+#, c-format
+msgid "Unable to create: %s\n"
+msgstr "Kan nie %s skep nie.\n"
+#
+# File: errdef.cpp, line: 101
+#, c-format
+msgid "Unable to determine length of file: %s\n"
+msgstr "Kan nie lengte van %s bepaal nie\n"
+#
+# File: errconv.cpp, line: 252
+# File: errconv.cpp, line: 253
+# File: errconv.cpp, line: 309
+# File: errconv.cpp, line: 310
+msgid "Unable to initialize CPP Parser.\n"
+msgstr "Fout om die CPP komponent aan die gang te kry.\n"
+#
+# File: errconv.cpp, line: 280
+# File: errconv.cpp, line: 281
+msgid "Unable to initialize Java Parser.\n"
+msgstr "Fout om die Java komponent aan die gang te kry.\n"
+#
+# File: errdef.cpp, line: 95
+#, c-format
+msgid "Unable to open %s\n"
+msgstr "Kan nie %s oop maak nie\n"
+#
+# File: errtest.cpp, line: 45
+msgid "Unable to resolve level.\n"
+msgstr "Weet nie wat vlak beteken nie.\n"
+#
+# File: errtest.cpp, line: 57
+msgid "Unable to resolve message.\n"
+msgstr "Weet nie wat boodskap beteken nie.\n"
+#
+# File: errtest.cpp, line: 39
+msgid "Unable to resolve name.\n"
+msgstr "Weet nie wat naam beteken nie.\n"
+#
+# File: errtest.cpp, line: 51
+msgid "Unable to resolve response.\n"
+msgstr "Weet nie wat reaksie beteken nie.\n"
+#
+# File: errconv.cpp, line: 79
+#, c-format
+msgid ""
+"Usage: %s --in infile [--c++] [--java] [--cout base-name] [--jout base-name] "
+"[--help]\n"
+msgstr ""
+"Usage: %s --in inset [--c++] [--java] [--cout basis-naam] [--jout basis-naam] "
+"[--help]\n"
+#
+# File: errdef.cpp, line: 30
+msgid "WARNING"
+msgstr "WAARSKUWING"
+#
+# File: errdef.cpp, line: 137
+msgid "Warning: Empty or invalid lines detected.\n"
+msgstr "Pasop: Lee of ongeldige lyne opgespoor.\n"
+#
+# File: errc.cpp, line: 81
+# File: errcpp.cpp, line: 81
+msgid "_Errors"
+msgstr "_Foute"
+#
+# File: errconv.cpp, line: 118
+msgid "c"
+msgstr "c"
+#
+# File: errconv.cpp, line: 113
+msgid "c++"
+msgstr "c++"
+#
+# File: errcpp.cpp, line: 107
+#, c-format
+msgid ""
+"class %s\n"
+"{\n"
+"public:\n"
+"  %s();\n"
+"  virtual ~%s();\n"
+msgstr ""
+"class %s\n"
+"{\n"
+"public:\n"
+"  %s();\n"
+"  virtual ~%s();\n"
+#
+# File: errconv.cpp, line: 119
+msgid "cnout"
+msgstr "cnout"
+#
+# File: errcpp.cpp, line: 167
+#, c-format
+msgid "const int %s_%-20s         = 0x%08X;\n"
+msgstr "const int %s_%-20s         = 0x%08X;\n"
+#
+# File: errcpp.cpp, line: 115
+#, c-format
+msgid "const int %s_LEVEL_%-20s        = 0x0%08X;\n"
+msgstr "const int %s_VLAK_%-20s        = 0x0%08X;\n"
+#
+# File: errcpp.cpp, line: 118
+#, c-format
+msgid "const int %s_RESPONSE_%-20s     = 0x0%08X;\n"
+msgstr "const int %s_REAKSIE_%-20s     = 0x0%08X;\n"
+#
+# File: errconv.cpp, line: 115
+msgid "cout"
+msgstr "cout"
+#
+# File: errconv.cpp, line: 120
+msgid "help"
+msgstr "help"
+#
+# File: errconv.cpp, line: 117
+msgid "in"
+msgstr "in"
+#
+# File: errc.cpp, line: 174
+#, c-format
+msgid "int %sErrorCode_To_Level( int code, int *level )\n"
+msgstr "int %sFoutKode_Na_Vlak( int kode, int *vlak )\n"
+#
+# File: errc.cpp, line: 179
+#, c-format
+msgid "int %sErrorCode_To_Message( int code, char *message, int len )\n"
+msgstr "int %sFoutKode_Na_Boodksap( int kode, char *boodskap, int lengte )\n"
+#
+# File: errc.cpp, line: 172
+#, c-format
+msgid "int %sErrorCode_To_Name( int code, char *name, int len )\n"
+msgstr "int %sFoutKode_Na_Naam( int kode, char *naam, int lengte )\n"
+#
+# File: errc.cpp, line: 176
+#, c-format
+msgid "int %sErrorCode_To_Response( int code, int *response )\n"
+msgstr "int %sFoutKode_Na_Reaksie( int kode, int *reaksie )\n"
+#
+# File: errconv.cpp, line: 114
+msgid "java"
+msgstr "java"
+#
+# File: errconv.cpp, line: 116
+msgid "jout"
+msgstr "jout"
+#
+# File: errjava.cpp, line: 127
+# File: errjava.cpp, line: 133
+#, c-format
+msgid ""
+"package %s;\n"
+"\n"
+"/*\n"
+" This code has been automatically generated -- DO NOT EDIT\n"
+"*/\n"
+"\n"
+msgstr ""
+"package %s;\n"
+"\n"
+"/*\n"
+" Die kode is automaties gegenereer - MOET NIE VERANDER NIE\n"
+"*/\n"
+"\n"
+#
+# File: errjava.cpp, line: 139
+#, c-format
+msgid ""
+"package %s;\n"
+"\n"
+"import java.util.HashMap;\n"
+"import commoncode.*;\n"
+"\n"
+"/*\n"
+" This code has been automatically generated -- DO NOT EDIT\n"
+"*/\n"
+"\n"
+msgstr ""
+"package %s;\n"
+"\n"
+"import java.util.HashMap;\n"
+"import commoncode.*;\n"
+"\n"
+"/*\n"
+" Die kode is automaties gegenereer - MOET NIE VERANDER NIE\n"
+"*/\n"
+"\n"
+#
+# File: errcpp.cpp, line: 112
+msgid ""
+"protected:\n"
+"private:\n"
+"};\n"
+"\n"
+"\n"
+msgstr ""
+"protected:\n"
+"private:\n"
+"};\n"
+"\n"
+"\n"
+#
+# File: errjava.cpp, line: 128
+# File: errjava.cpp, line: 134
+#, c-format
+msgid "public class %s {\n"
+msgstr "public class %s {\n"
+#
+# File: errjava.cpp, line: 140
+#, c-format
+msgid ""
+"public class %s {\n"
+"    private static HashMap errHash=null;\n"
+msgstr ""
+"public class %s {\n"
+"    private static HashMap FoutHash=null;\n"
+#
+#
+# File: errc.cpp, line: 106
+# File: errcpp.cpp, line: 113
+msgid ""
+"struct error_defs\n"
+"{\n"
+" int code;\n"
+" char *name;\n"
+" int level;\n"
+" int response;\n"
+" char *message;\n"
+"};\n"
+"\n"
+msgstr ""
+"struct fout_defs\n"
+"{\n"
+" int kode;\n"
+" char *naam;\n"
+" int vlak;\n"
+" int reaksie;\n"
+" char *boodskap;\n"
+"};\n"
+"\n"
+#
+# File: errc.cpp, line: 125
+# File: errcpp.cpp, line: 132
+#, c-format
+msgid ""
+"struct error_defs %sS[%d]=\n"
+"{\n"
+msgstr ""
+"struct fout_defs %sS[%d]=\n"
+"{\n"
+#
+# File: errcpp.cpp, line: 183
+#, c-format
+msgid "unsigned int %s::ErrorCode_To_Level( int code, int *level )\n"
+msgstr "unsigned int %s::FoutKode_Na_Vlak( int kode, int *vlak )\n"
+#
+# File: errcpp.cpp, line: 188
+#, c-format
+msgid ""
+"unsigned int %s::ErrorCode_To_Message( int code, char *message, int len )\n"
+msgstr ""
+"unsigned int %s::FoutKode_Na_Boodskap( int kode, char *boodskap, int lengte )\n"
+#
+# File: errcpp.cpp, line: 181
+#, c-format
+msgid "unsigned int %s::ErrorCode_To_Name( int code, char *name, int len )\n"
+msgstr "unsigned int %s::FoutKode_Na_Naam( int kode, char *naam, int lengte )\n"
+#
+# File: errcpp.cpp, line: 185
+#, c-format
+msgid "unsigned int %s::ErrorCode_To_Response( int code, int *response )\n"
+msgstr "unsigned int %s::FoutKode_Na_Reaksie( int kode, int *reaksie )\n"
+#
+#
+# File: errcpp.cpp, line: 184
+#, c-format
+msgid ""
+"{\n"
+" int cnt;\n"
+"\n"
+" for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n"
+"    {\n"
+"    if (code==%sS[cnt].code)\n"
+"      {\n"
+"       *level=%sS[cnt].level;\n"
+"      return 0;\n"
+"      }\n"
+"    }\n"
+"  return 1;\n"
+"}\n"
+"\n"
+msgstr ""
+"{\n"
+" int tel;\n"
+"\n"
+" for (tel=0;tel<%s_HOEFEELHEID_FOUTE;tel++)\n"
+"    {\n"
+"    if (kode==%sS[tel].kode)\n"
+"      {\n"
+"       *vlak=%sS[tel].vlak;\n"
+"      return 0;\n"
+"      }\n"
+"    }\n"
+"  return 1;\n"
+"}\n"
+"\n"
+#
+# File: errc.cpp, line: 175
+#, c-format
+msgid ""
+"{\n"
+" int cnt;\n"
+"\n"
+" for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n"
+"    {\n"
+"    if (code==%sS[cnt].code)\n"
+"      {\n"
+"       *level=%sS[cnt].level;\n"
+"      return( 0 );\n"
+"      }\n"
+"    }\n"
+"  return(1);\n"
+"}\n"
+"\n"
+msgstr ""
+"{\n"
+" int tel;\n"
+"\n"
+" for (tel=0;tel<%s_HOEFEELHEID_FOUTE;tel++)\n"
+"    {\n"
+"    if (kode==%sS[tel].kode)\n"
+"      {\n"
+"       *vlak=%sS[tel].vlak;\n"
+"      return( 0 );\n"
+"      }\n"
+"    }\n"
+"  return(1);\n"
+"}\n"
+"\n"
+#
+# File: errcpp.cpp, line: 186
+#, c-format
+msgid ""
+"{\n"
+" int cnt;\n"
+"\n"
+" for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n"
+"    {\n"
+"    if (code==%sS[cnt].code)\n"
+"      {\n"
+"       *response=%sS[cnt].response;\n"
+"      return 0;\n"
+"      }\n"
+"    }\n"
+"  return 1;\n"
+"}\n"
+"\n"
+msgstr ""
+"{\n"
+" int tel;\n"
+"\n"
+" for (tel=0;tel<%s_HOEFEELHEID_FOUTE;tel++)\n"
+"    {\n"
+"    if (kode==%sS[tel].kode)\n"
+"      {\n"
+"       *reaksie=%sS[tel].reaksie;\n"
+"      return 0;\n"
+"      }\n"
+"    }\n"
+"  return 1;\n"
+"}\n"
+"\n"
+#
+# File: errc.cpp, line: 177
+#, c-format
+msgid ""
+"{\n"
+" int cnt;\n"
+"\n"
+" for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n"
+"    {\n"
+"    if (code==%sS[cnt].code)\n"
+"      {\n"
+"       *response=%sS[cnt].response;\n"
+"      return( 0 );\n"
+"      }\n"
+"    }\n"
+"  return(1);\n"
+"}\n"
+"\n"
+msgstr ""
+"{\n"
+" int tel;\n"
+"\n"
+" for (tel=0;tel<%s_HOEFEELHEID_FOUTE;tel++)\n"
+"    {\n"
+"    if (kode==%sS[tel].kode)\n"
+"      {\n"
+"       *reaksie=%sS[tel].reaksie;\n"
+"      return( 0 );\n"
+"      }\n"
+"    }\n"
+"  return(1);\n"
+"}\n"
+"\n"
+#
+# File: errcpp.cpp, line: 189
+#, c-format
+msgid ""
+"{\n"
+" int cnt;\n"
+"\n"
+" for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n"
+"    {\n"
+"    if (code==%sS[cnt].code)\n"
+"      {\n"
+"      if (strlen(%sS[cnt].message)+1>(unsigned)len) return 1;\n"
+"      strcpy( message, %sS[cnt].message );\n"
+"      return 0;\n"
+"      }\n"
+"    }\n"
+"  return 1;\n"
+"}\n"
+"\n"
+msgstr ""
+"{\n"
+" int tel;\n"
+"\n"
+" for (tel=0;tel<%s_HOEFEELHEID_FOUTE;tel++)\n"
+"    {\n"
+"    if (kode==%sS[tel].kode)\n"
+"      {\n"
+"      if (strlen(%sS[tel].boodskap)+1>(unsigned)lengte) return 1;\n"
+"      strcpy( boodskap, %sS[tel].boodskap );\n"
+"      return 0;\n"
+"      }\n"
+"    }\n"
+"  return 1;\n"
+"}\n"
+"\n"
+#
+# File: errc.cpp, line: 180
+#, c-format
+msgid ""
+"{\n"
+" int cnt;\n"
+"\n"
+" for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n"
+"    {\n"
+"    if (code==%sS[cnt].code)\n"
+"      {\n"
+"      if (strlen(%sS[cnt].message)+1>len) return( 1 );\n"
+"      strcpy( message, %sS[cnt].message );\n"
+"      return( 0 );\n"
+"      }\n"
+"    }\n"
+"  return(1);\n"
+"}\n"
+"\n"
+msgstr ""
+"{\n"
+" int tel;\n"
+"\n"
+" for (tel=0;tel<%s_HOEFEELHEID_FOUTE;tel++)\n"
+"    {\n"
+"    if (kode==%sS[tel].kode)\n"
+"      {\n"
+"      if (strlen(%sS[tel].boodskap)+1>lengte) return( 1 );\n"
+"      strcpy( boodskap, %sS[tel].boodskap );\n"
+"      return( 0 );\n"
+"      }\n"
+"    }\n"
+"  return(1);\n"
+"}\n"
+"\n"
+#
+# File: errcpp.cpp, line: 182
+#, c-format
+msgid ""
+"{\n"
+" int cnt;\n"
+"\n"
+" for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n"
+"    {\n"
+"    if (code==%sS[cnt].code)\n"
+"      {\n"
+"      if (strlen(%sS[cnt].name)+1>(unsigned)len) return 1;\n"
+"      strcpy( name, %sS[cnt].name );\n"
+"      return 0;\n"
+"      }\n"
+"    }\n"
+"  return 1;\n"
+"}\n"
+"\n"
+msgstr ""
+"{\n"
+" int tel;\n"
+"\n"
+" for (tel=0;tel<%s_HOEFEELHEID_FOUTE;tel++)\n"
+"    {\n"
+"    if (kode==%sS[tel].kode)\n"
+"      {\n"
+"      if (strlen(%sS[tel].naam)+1>(unsigned)lengte) return 1;\n"
+"      strcpy( naam, %sS[tel].naam );\n"
+"      return 0;\n"
+"      }\n"
+"    }\n"
+"  return 1;\n"
+"}\n"
+"\n"
+#
+# File: errc.cpp, line: 173
+#, c-format
+msgid ""
+"{\n"
+" int cnt;\n"
+"\n"
+" for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n"
+"    {\n"
+"    if (code==%sS[cnt].code)\n"
+"      {\n"
+"      if (strlen(%sS[cnt].name)+1>len) return( 1 );\n"
+"      strcpy( name, %sS[cnt].name );\n"
+"      return( 0 );\n"
+"      }\n"
+"    }\n"
+"  return(1);\n"
+"}\n"
+"\n"
+msgstr ""
+"{\n"
+" int tel;\n"
+"\n"
+" for (tel=0;tel<%s_HOEFEELHEID_FOUTE;tel++)\n"
+"    {\n"
+"    if (kode==%sS[tel].kode)\n"
+"      {\n"
+"      if (strlen(%sS[tel].naam)+1>lengte) return( 1 );\n"
+"      strcpy( naam, %sS[tel].naam );\n"
+"      return( 0 );\n"
+"      }\n"
+"    }\n"
+"  return(1);\n"
+"}\n"
+"\n"
+#
+# File: errc.cpp, line: 165
+# File: errcpp.cpp, line: 172
+msgid ""
+"};\n"
+"\n"
+"\n"
+msgstr ""
+"};\n"
+"\n"
+"\n"

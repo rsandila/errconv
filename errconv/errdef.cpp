@@ -19,7 +19,10 @@
 #include "errdef.h"
 #include <string.h>
 #include <ctype.h>
+#include <locale.h>
+#include <libintl.h>
 
+#define _(str) gettext(str)
 
 //! This defines the valid values that the error level parameter can take
 char *valid_levels[NUM_VALID_LEVELS]=
@@ -86,22 +89,22 @@ int Error_Definitions::Init( char *file_name )
   messages=NULL;
   if (access( file_name, R_OK )) 
    {
-     fprintf( stderr, "No read access to %s\n", file_name );
+     fprintf( stderr, _("No read access to %s\n"), file_name );
      return( 0 );
    }
   inp=fopen( file_name, "rt" );
   if (!inp)
     {
-      fprintf( stderr, "Unable to open %s\n", file_name );
+      fprintf( stderr, _("Unable to open %s\n"), file_name );
       return( 0 );
     }
   num_errors=count_lines( inp );
   if (!num_errors)
     {
-      fprintf( stderr, "Unable to determine length of file: %s\n", file_name );
+      fprintf( stderr, _("Unable to determine length of file: %s\n"), file_name );
       return( 0 );
     }
-  printf( "File %s contains %d lines.\n", file_name, num_errors );
+  printf( _("File %s contains %d lines.\n"), file_name, num_errors );
   error_names=new char *[num_errors+1];
   error_codes=new int[num_errors+1];
   levels=new char *[num_errors+1];
@@ -109,7 +112,7 @@ int Error_Definitions::Init( char *file_name )
   messages=new char *[num_errors+1];
   if (!error_names || !error_codes || !levels || !responses || !messages)
     {
-      fprintf( stderr, "Out of memory allocating objects.\n" );
+      fprintf( stderr, _("Out of memory allocating objects.\n") );
       return( 0 );
     }
   memset( error_names, 0, sizeof(char *)*(num_errors+1) );
@@ -122,7 +125,7 @@ int Error_Definitions::Init( char *file_name )
     {
       if (count>=num_errors)
         {
-	  fprintf( stderr, "File seems to have grown???\n" );
+	  fprintf( stderr, _("File seems to have grown???\n") );
           return( 0 );
 	}
       result=parse_line( count, buf );
@@ -134,7 +137,7 @@ int Error_Definitions::Init( char *file_name )
     }
   if (count<num_errors)
     {
-      printf( "Warning: Empty or invalid lines detected.\n" );
+      printf( _("Warning: Empty or invalid lines detected.\n") );
       num_errors=count;
     }
   fclose( inp );
@@ -153,7 +156,7 @@ int Error_Definitions::parse_line( int count, char *buf )
   tok=strtok( buf, ":" );
   if (!tok)
     {
-      fprintf( stderr, "Invalid formatted string: %d\n", count );
+      fprintf( stderr, _("Invalid formatted string: %d\n"), count );
       return( -1 );
     }
   strcpy( name, tok );
@@ -161,58 +164,58 @@ int Error_Definitions::parse_line( int count, char *buf )
   for (cnt1=0;cnt1<count;cnt1++)
     if (!strcmp( error_names[cnt1], name ))
       {
-	fprintf( stderr, "Entries %d and %d have identical names: %s\n", cnt1, count, name );
+	fprintf( stderr, _("Entries %d and %d have identical names: %s\n"), cnt1, count, name );
         return( -1 );
       }
   tok=strtok( NULL, ":" );
   if (!tok)
     {
-      fprintf( stderr, "Invalid formatted string: %d\n", count );
+      fprintf( stderr, _("Invalid formatted string: %d\n"), count );
       return( -1 );
     }
   code=atoi( tok );
   for (cnt1=0;cnt1<count;cnt1++)
     if (code==error_codes[cnt1])
       {
-	fprintf( stderr, "Entries %d and %d have identical error codes.\n", cnt1, count );
+	fprintf( stderr, _("Entries %d and %d have identical error codes.\n"), cnt1, count );
         return( -1 );
       }
   tok=strtok( NULL, ":" );
   if (!tok)
     {
-      fprintf( stderr, "Invalid formatted string: %d\n", count );
+      fprintf( stderr, _("Invalid formatted string: %d\n"), count );
       return( -1 );
     }
   strcpy( level, tok );
   strup( level );
   cnt2=0;
   for (cnt1=0;cnt1<NUM_VALID_LEVELS;cnt1++)
-    if (!strcmp( level, valid_levels[cnt1] )) cnt2+=1;
+    if (!strcmp( level, _(valid_levels[cnt1]) )) cnt2+=1;
   if (!cnt2)
     {
-      fprintf( stderr, "Invalid level %s specified in line %d\n", level, count );
+      fprintf( stderr, _("Invalid level %s specified in line %d\n"), level, count );
       return( -1 );
     }
   tok=strtok( NULL, ":" );
   if (!tok)
     {
-      fprintf( stderr, "Invalid formatted string: %d\n", count );
+      fprintf( stderr, _("Invalid formatted string: %d\n"), count );
       return( -1 );
     }
   strcpy( response, tok );
   strup( response );
   cnt2=0;
   for (cnt1=0;cnt1<NUM_VALID_RESPONSES;cnt1++)
-    if (!strcmp( response, valid_responses[cnt1] )) cnt2+=1;
+    if (!strcmp( response, _(valid_responses[cnt1]) )) cnt2+=1;
   if (!cnt2)
     {
-      fprintf( stderr, "Invalid response %s specified in line %d\n", response, count );
+      fprintf( stderr, _("Invalid response %s specified in line %d\n"), response, count );
       return( -1 );
     }  
   tok=strtok( NULL, ":" );
   if (!tok)
     {
-      fprintf( stderr, "Invalid formatted string: %d\n", count );
+      fprintf( stderr, _("Invalid formatted string: %d\n"), count );
       return( -1 );
     }
   strcpy( message, tok );
@@ -223,7 +226,7 @@ int Error_Definitions::parse_line( int count, char *buf )
   messages[count]=new char[strlen(message)+1];
   if (!error_names[count] || !levels[count] || !responses[count] || !messages[count])
     {
-      fprintf( stderr, "Out of memory.\n" );
+      fprintf( stderr, _("Out of memory.\n") );
       return( -1 );
     }
   error_codes[count]=code;

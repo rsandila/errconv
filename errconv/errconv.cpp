@@ -16,6 +16,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#include <locale.h>
+#include <libintl.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -25,6 +27,8 @@
 #include "errcpp.h"
 #include "errjava.h"
 #include "errc.h"
+
+#define _(str) gettext(str)
 
 /*! \brief This program converts an error file definition into the needed C++ and Java classes to be used by other programs
 
@@ -72,15 +76,15 @@ int show_help_and_exit( char *reason, char *program_name )
 {
   if (reason)
     fprintf( stderr, "\n%s\n\n", reason );
-  fprintf( stderr, "Usage: %s --in infile [--c++] [--java] [--cout base-name] [--jout base-name] [--help]\n", program_name );
-  fprintf( stderr, "      --in    - The error definition input file.\n" );
-  fprintf( stderr, "      --c++   - Generate C++ files. Requires that --cout be specified.\n" );
-  fprintf( stderr, "      --java  - Generate Java files. Requires that --jout be specified.\n" );
-  fprintf( stderr, "      --cout  - The base name used for generating the C++ file names.\n" );
-  fprintf( stderr, "      --jout  - The base name used for generating the Java file names.\n" );
-  fprintf( stderr, "      --c     - Generate C files. Requires that --cnout be specified.\n" );
-  fprintf( stderr, "      --cnout - The base name used for generating the C file names.\n" );
-  fprintf( stderr, "      --help  - This screen.\n\n" );
+  fprintf( stderr, _("Usage: %s --in infile [--c++] [--java] [--cout base-name] [--jout base-name] [--help]\n"), program_name );
+  fprintf( stderr, _("      --in    - The error definition input file.\n") );
+  fprintf( stderr, _("      --c++   - Generate C++ files. Requires that --cout be specified.\n") );
+  fprintf( stderr, _("      --java  - Generate Java files. Requires that --jout be specified.\n") );
+  fprintf( stderr, _("      --cout  - The base name used for generating the C++ file names.\n") );
+  fprintf( stderr, _("      --jout  - The base name used for generating the Java file names.\n") );
+  fprintf( stderr, _("      --c     - Generate C files. Requires that --cnout be specified.\n") );
+  fprintf( stderr, _("      --cnout - The base name used for generating the C file names.\n") );
+  fprintf( stderr, _("      --help  - This screen.\n\n") );
   if (reason) return( 1 );
   else return( 0 );
 }
@@ -117,7 +121,7 @@ int process_arguments( int *flag, char cout[255], char jout[255], char cnout[255
     { NULL, 0, NULL, 0 }
    };
   
-  if (argc==1) return( show_help_and_exit( "No parameters defined.", argv[0] ));
+  if (argc==1) return( show_help_and_exit( gettext( "No parameters defined." ), argv[0] ));
   arg_counter=0;
   *flag=ERRCONV_NO_OUT;
   infile[0]=0;
@@ -132,23 +136,23 @@ int process_arguments( int *flag, char cout[255], char jout[255], char cnout[255
       {
 	if (*flag==ERRCONV_NO_OUT)
           {
-	    return( show_help_and_exit( "No output type defined.", argv[0] ) );
+	    return( show_help_and_exit( _("No output type defined."), argv[0] ) );
 	  }
         if (infile[0]==0)
           {
-            return( show_help_and_exit( "No input file defined.", argv[0] ) );
+            return( show_help_and_exit( _("No input file defined."), argv[0] ) );
 	  }
         if (((*flag)&ERRCONV_C_OUT) && cout[0]==0)
           {
-            return( show_help_and_exit( "C++ base name not specified.", argv[0] ) );
+            return( show_help_and_exit( _("C++ base name not specified."), argv[0] ) );
 	  }
         if (((*flag)&ERRCONV_JAVA_OUT) && jout[0]==0)
 	  {
-	    return( show_help_and_exit( "Java base name not specified.", argv[0] ) );
+	    return( show_help_and_exit( _("Java base name not specified."), argv[0] ) );
 	  }
 	if (((*flag)&ERRCONV_CN_OUT) && cnout[0]==0)
 	  {
-	    return( show_help_and_exit( "C base name not specified.", argv[0] ) );
+	    return( show_help_and_exit( _("C base name not specified."), argv[0] ) );
 	  }
         return( 0 );
       }
@@ -178,7 +182,7 @@ int process_arguments( int *flag, char cout[255], char jout[255], char cnout[255
 	strcpy( cnout, optarg );
 	break;
       default:
-	return( show_help_and_exit( "Invalid command line option.", argv[0] ) );
+	return( show_help_and_exit( _("Invalid command line option."), argv[0] ) );
       };
 
     }
@@ -212,6 +216,10 @@ int main( int argc, char **argv )
   java=NULL;
   c=NULL;
 
+  setlocale( LC_ALL, "" );
+  bindtextdomain( PACKAGE, NULL );
+  textdomain( PACKAGE );
+  printf( _("%s %s compiled on %s, %s\n"), PACKAGE, VERSION, __DATE__, __TIME__ );
   result=process_arguments( &flag, cout, jout, cnout, infile, argc, argv );
   if (result)
     { // Assumes error code has been printed.
@@ -221,7 +229,7 @@ int main( int argc, char **argv )
   err_def=new Error_Definitions( infile );
   if (!err_def) 
     { // No mem
-      fprintf( stderr, "Out of memory.\n" );
+      fprintf( stderr, _("Out of memory.\n") );
       return( 1 );
     }
 
@@ -237,12 +245,12 @@ int main( int argc, char **argv )
       if (!cpp)
 	{
 	  delete err_def;
-	  fprintf( stderr, "Out of memory.\n" );
+	  fprintf( stderr, _("Out of memory.\n") );
           return( 1 );
 	}
       if (!cpp->isOk())
         {
-	  fprintf( stderr, "Unable to initialize CPP Parser.\n" );
+	  fprintf( stderr, _("Unable to initialize CPP Parser.\n") );
 	  delete err_def;
           delete cpp;
           cpp=NULL;
@@ -262,7 +270,7 @@ int main( int argc, char **argv )
 	{
 	  delete err_def;
 	  if (cpp) delete cpp;
-	  fprintf( stderr, "Out of memory.\n" );
+	  fprintf( stderr, _("Out of memory.\n") );
           return( 1 );
 	}
       if (!java->isOk())
@@ -270,7 +278,7 @@ int main( int argc, char **argv )
 	  delete err_def;
 	  if (cpp) delete cpp;
 	  delete java;
-	  fprintf( stderr, "Unable to initialize Java Parser.\n" );
+	  fprintf( stderr, _("Unable to initialize Java Parser.\n") );
           delete cpp;
           cpp=NULL;
           return( 1 );
@@ -291,7 +299,7 @@ int main( int argc, char **argv )
 	  delete err_def;
 	  if (cpp) delete cpp;
 	  if (java) delete java;
-	  fprintf( stderr, "Out of memory.\n" );
+	  fprintf( stderr, _("Out of memory.\n") );
           return( 1 );
 	}
       if (!c->isOk())
@@ -299,7 +307,7 @@ int main( int argc, char **argv )
 	  delete err_def;
 	  if (cpp) delete cpp;
 	  if (java) delete java;
-	  fprintf( stderr, "Unable to initialize CPP Parser.\n" );
+	  fprintf( stderr, _("Unable to initialize CPP Parser.\n") );
           delete c;
           c=NULL;
           return( 1 );

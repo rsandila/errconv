@@ -1,16 +1,46 @@
-
+PACKAGE = @PACKAGE@
+VERSION = @VERSION@
 ERRCONVOBJ = @ERRCONVOBJ@ 
-CFLAGS = -g
-CPPFLAGS = -g
+CFLAGS = -g -DPACKAGE=\"@PACKAGE@\" -DVERSION=\"@VERSION@\"
+CPPFLAGS = $(CFLAGS)
+LIB=
+LANG=@ALL_LINGUAS@
+LANGSRC=$(foreach cnt,$(LANG)," po/"$(cnt)".po")
+LANGDST=/usr/share/locale
+INSTALL=@INSTALL@
+INSTALL_DATA=@INSTALL_DATA@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
 
 ALL = @ALL@
 
 all: $(ALL)
 
 errconv: $(ERRCONVOBJ)
-	$(CC) -o errconv $(ERRCONVOBJ)
+	$(CC) -o errconv $(ERRCONVOBJ) $(LIB)
 
-@globalerrorsh@
+lang: 
+	for f in $(LANGSRC); do \
+	  msgfmt -v -o po/`basename $$f .po`.mo $$f ; \
+	done
 
 clean:
 	-rm -f $(ALL) *.o *~ core
+
+install:
+	$(INSTALL) errconv @bindir@
+	for f in $(LANGSRC); do \
+	  if [ ! -d $(LANGDST)/`basename $$f .po` ]; then \
+	       mkdir -p $(LANGDST)/`basename $$f .po` ; \
+	  fi ; \
+	  if [ ! -d $(LANGDST)/`basename $$f .po`/LC_MESSAGES ]; then \
+	       mkdir -p $(LANGDST)/`basename $$f .po`/LC_MESSAGES ; \
+	  fi ; \
+	  $(INSTALL) po/`basename $$f .po`.mo $(LANGDST)/`basename $$f .po`/LC_MESSAGES/$(PACKAGE).mo ; \
+	done
+
+uninstall:
+	-rm @bindir@/errconv
+	for f in $(LANGSRC); do \
+	  rm $(LANGDST)/`basename $$f .po`/LC_MESSAGES/$(PACKAGE).mo  ; \
+	done
