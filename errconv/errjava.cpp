@@ -16,13 +16,20 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#ifdef __LOCAL__
 #include <locale.h>
 #include <libintl.h>
+#endif
 #include "errjava.h"
 #include <string.h>
 #include <ctype.h>
 
+
+#ifdef __LOCAL__
 #define _(str) gettext(str)
+#else
+#define _(str) str
+#endif
 
 Java_Errors::Java_Errors( char *out_base, Error_Definitions *err )
 {

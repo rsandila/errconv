@@ -15,20 +15,25 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-
+#ifdef __LOCAL__
 #include <locale.h>
 #include <libintl.h>
+#endif
 #include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>
 #include <getopt.h>
+//#include <unistd.h>
 #include <string.h>
 #include "errdef.h"
 #include "errcpp.h"
 #include "errjava.h"
 #include "errc.h"
 
+#ifdef __LOCAL__
 #define _(str) gettext(str)
+#else
+#define _(str) str
+#endif
 
 /*! \brief This program converts an error file definition into the needed C++ and Java classes to be used by other programs
 
@@ -121,7 +126,7 @@ int process_arguments( int *flag, char cout[255], char jout[255], char cnout[255
     { NULL, 0, NULL, 0 }
    };
   
-  if (argc==1) return( show_help_and_exit( gettext( "No parameters defined." ), argv[0] ));
+  if (argc==1) return( show_help_and_exit( _( "No parameters defined." ), argv[0] ));
   arg_counter=0;
   *flag=ERRCONV_NO_OUT;
   infile[0]=0;
@@ -215,10 +220,11 @@ int main( int argc, char **argv )
   cpp=NULL;
   java=NULL;
   c=NULL;
-
+#ifdef __LOCAL__
   setlocale( LC_ALL, "" );
   bindtextdomain( PACKAGE, NULL );
   textdomain( PACKAGE );
+#endif
   printf( _("%s %s compiled on %s, %s\n"), PACKAGE, VERSION, __DATE__, __TIME__ );
   result=process_arguments( &flag, cout, jout, cnout, infile, argc, argv );
   if (result)

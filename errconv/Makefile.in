@@ -1,7 +1,7 @@
 PACKAGE = @PACKAGE@
 VERSION = @VERSION@
 ERRCONVOBJ = @ERRCONVOBJ@ 
-CFLAGS = -g -DPACKAGE=\"@PACKAGE@\" -DVERSION=\"@VERSION@\"
+CFLAGS = -g @CFLAGS@ -DPACKAGE=\"@PACKAGE@\" -DVERSION=\"@VERSION@\"
 CPPFLAGS = $(CFLAGS)
 LIB=
 LANG=@ALL_LINGUAS@
@@ -17,12 +17,12 @@ ALL = @ALL@
 all: $(ALL)
 
 errconv: $(ERRCONVOBJ)
-	$(CC) -o errconv $(ERRCONVOBJ) $(LIB)
+	$(CXX) -o errconv $(ERRCONVOBJ) $(LIB)
 
 lang: 
-	for f in $(LANGSRC); do \
-	  msgfmt -v -o po/`basename $$f .po`.mo $$f ; \
-	done
+	  for f in $(LANGSRC); do \
+	    @LOCAL@ -v -o po/`basename $$f .po`.mo $$f ; \
+	  done
 
 clean:
 	-rm -f $(ALL) *.o *~ core

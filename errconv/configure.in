@@ -12,6 +12,9 @@ AC_SUBST(ALL_LINGUAS)
 AC_SUBST(INSTALL)
 AC_SUBST(INSTALL_DATA)
 AC_SUBST(bindir)
+AC_SUBST(CFLAGS)
+AC_SUBST(LOCAL)
+AC_SUBST(ALL)
 
 prefix="/usr/local"
 
@@ -23,14 +26,25 @@ AC_PROG_INSTALL
 dnl AM_GNU_GETTEXT
 
 dnl Check for PO files.
-AC_MSG_CHECKING( "all languages present" )
-for f in $ALL_LINGUAS; do
+AC_PATH_PROG( MSGHDR, msgfmt, [] )
+if test ! -x "$MSGHDR"; then
+ CFLAGS=[-I.]
+ LOCAL=[""]
+ ALL=[""]
+else
+ CFLAGS=[-D__LOCAL__]
+ LOCAL=$MSGHDR
+ ALL=["lang"]
+ AC_MSG_CHECKING( "all languages present" )
+ for f in $ALL_LINGUAS; do
   if test ! -f po/$f.po; then
     AC_MSG_RESULT( "$f missing" )
     AC_MSG_ERROR( "Please make sure all the language files is present in the po/ subdirectory." )
   fi
-done
-AC_MSG_RESULT( $ALL_LINGUAS )
+ done
+ AC_MSG_RESULT( $ALL_LINGUAS )
+fi
+
 
 dnl check for getopt in standard library
 AC_SUBST(ERRCONVOBJ)
@@ -41,8 +55,7 @@ dnl Check for header files
 AC_HEADER_STDC
 AC_CHECK_HEADERS(unistd.h)
 
-AC_SUBST(ALL)
-ALL="$ALL errconv lang"
+ALL="$ALL errconv"
 
 dnl Finalize output
 AC_OUTPUT(Makefile)
