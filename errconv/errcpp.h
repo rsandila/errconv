@@ -1,6 +1,24 @@
 #ifndef __ERRCPP_H__
 #define __ERRCPP_H__
 
+/*
+ * Copyright (C) 2001 SecureWorx South Africa (Pty) Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
 #include "errdef.h"
 /*! \brief This class will take the data as provided by the Error_Defintions class and write it to a C++ class
     \pre The Error_Definitions class must be properly intialized. The Error_Definitions class passed to it must be valid for the whole life of this class.
