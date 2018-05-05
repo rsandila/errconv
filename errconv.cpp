@@ -215,13 +215,7 @@ int main(int argc, char **argv) {
   int result;
   int flag;
   std::string cout, jout, infile, cnout;
-  CPP_Errors *cpp;
-  Java_Errors *java;
-  C_Errors *c;
 
-  cpp = NULL;
-  java = NULL;
-  c = NULL;
 #ifdef __LOCAL__
   setlocale(LC_ALL, "");
   bindtextdomain(PACKAGE, NULL);
@@ -241,89 +235,35 @@ int main(int argc, char **argv) {
   }
 
   if (flag & ERRCONV_C_OUT) {
-    cpp = new CPP_Errors(cout, err_def);
-    if (!cpp) {
-
-      fprintf(stderr, _("Out of memory.\n"));
-      return (1);
-    }
-    if (!cpp->isOk()) {
+    CPP_Errors cpp(cout, err_def);
+    if (!cpp.isOk()) {
       fprintf(stderr, _("Unable to initialize CPP Parser.\n"));
-
-      delete cpp;
-      cpp = NULL;
       return (1);
     }
-    if (cpp->execute()) {
-
-      delete cpp;
+    if (cpp.execute()) {
       return (1);
     }
   }
   if (flag & ERRCONV_JAVA_OUT) {
-    java = new Java_Errors(jout, err_def);
-    if (!java) {
+    Java_Errors java(jout, err_def);
+    if (!java.isOk()) {
 
-      if (cpp)
-        delete cpp;
-      fprintf(stderr, _("Out of memory.\n"));
-      return (1);
-    }
-    if (!java->isOk()) {
-
-      if (cpp)
-        delete cpp;
-      delete java;
       fprintf(stderr, _("Unable to initialize Java Parser.\n"));
-      delete cpp;
-      cpp = NULL;
       return (1);
     }
-    if (java->execute()) {
-      if (cpp)
-        delete cpp;
-      delete java;
+    if (java.execute()) {
       return (1);
     }
   }
   if (flag & ERRCONV_CN_OUT) {
-    c = new C_Errors(cnout, err_def);
-    if (!c) {
-
-      if (cpp)
-        delete cpp;
-      if (java)
-        delete java;
-      fprintf(stderr, _("Out of memory.\n"));
-      return (1);
-    }
-    if (!c->isOk()) {
-      if (cpp)
-        delete cpp;
-      if (java)
-        delete java;
+    C_Errors c(cnout, err_def);
+    if (!c.isOk()) {
       fprintf(stderr, _("Unable to initialize CPP Parser.\n"));
-      delete c;
-      c = NULL;
       return (1);
     }
-    if (c->execute()) {
-      if (cpp)
-        delete cpp;
-      if (java)
-        delete java;
-      delete c;
+    if (c.execute()) {
       return (1);
     }
   }
-  if (cpp)
-    delete cpp;
-  cpp = NULL;
-  if (java)
-    delete java;
-  java = NULL;
-  if (c)
-    delete c;
-  c = NULL;
   return (0);
 }
