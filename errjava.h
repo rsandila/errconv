@@ -23,8 +23,8 @@
 
 /*! \brief This class will take the data as provided by the Error_Defintions class and write it to Java classes
     \pre The Error_Definitions class must be properly intialized. The Error_Definitions class passed to it must be valid for the whole life of this class.
-    \post Three new files will be created [out_base]ImpLevel.java, [out_base]Response.java and [out_base]Error.java with classes with the same names as the files without the .java that will handle error processing and reporting. 
-    
+    \post Three new files will be created [out_base]ImpLevel.java, [out_base]Response.java and [out_base]Error.java with classes with the same names as the files without the .java that will handle error processing and reporting.
+
     This class depends on the class Error_Defintions.
  */
 class Java_Errors
@@ -35,13 +35,13 @@ class Java_Errors
       \post All parameters have been checked to be valid.
       \returns Nothing
    */
-  Java_Errors( char *out_base, Error_Definitions *err );
+  Java_Errors( const std::string & out_base, const Error_Definitions & err );
   /*! \brief The default destructor for the class.
       \pre Assumes the constructor has been called.
       \post All resources have been free'd except the Error_Definitions class passed to it.
       \returns Nothing.
    */
-  virtual ~Java_Errors(); 
+  virtual ~Java_Errors();
   /*! \brief Returns whether the class initialized correctly or not.
       \pre The constructor has been called.
       \post Nothing.
@@ -62,7 +62,7 @@ class Java_Errors
       \param out_base The base name used for the file and class name generation.
       \param err The class containing the parsed error information.
    */
-  int Init( char *out_base, Error_Definitions *err );
+  int Init();
   /*! \brief Creates the two files and initialized it with the needed header information.
       \pre All parameters have been verified and the target files can be overwritten.
       \post The target files are overwritten and initialized.
@@ -85,11 +85,11 @@ class Java_Errors
   //! Contains non-zero on successfull construction of the class.
   int installed;
   //! The object that contains the parse error defintions
-  Error_Definitions *errdef;
+  const Error_Definitions & errdef;
   //! The file handles of the output files.
   FILE *out_level, *out_response, *out_error;
   //! The base name used for constructing the file names and the class name.
-  char base[255];
+  std::string base;
   //! The names of the three classes
   char class_level[255], class_response[255], class_error[255];
 };

@@ -31,12 +31,12 @@
 #define _(str) str
 #endif
 
-Java_Errors::Java_Errors( char *out_base, Error_Definitions *err )
+Java_Errors::Java_Errors( const std::string & out_base, const Error_Definitions & err ) : errdef(err), base(out_base)
 {
-  installed=Init( out_base, err );
+  installed=Init();
 }
 
-Java_Errors::~Java_Errors() 
+Java_Errors::~Java_Errors()
 {
   if (out_level) fclose( out_level );
   out_level=NULL;
@@ -45,13 +45,12 @@ Java_Errors::~Java_Errors()
   if (out_error) fclose( out_error );
   out_error=NULL;
   installed=0;
-  errdef=NULL;
 }
 
 int Java_Errors::execute()
 {
   int result;
-  if (!isOk()) 
+  if (!isOk())
     {
       fprintf( stderr, _("Class did not initialize properly.\n") );
       return( 1 );
@@ -63,20 +62,11 @@ int Java_Errors::execute()
   return( close_files() );
 }
 
-int Java_Errors::Init( char *out_base, Error_Definitions *err )
+int Java_Errors::Init( )
 {
   out_level=NULL;
   out_response=NULL;
   out_error=NULL;
-  errdef=NULL;
-  if (!err || !out_base || !err->isOk()) return( 0 );
-  if (strlen( out_base )+1>255) 
-   {
-     fprintf( stderr, _("The base name is too long.\n") );
-    return( 0 );
-   }
-  strcpy( base, out_base );
-  errdef=err;
   return( 1 );
 }
 
@@ -85,15 +75,15 @@ int Java_Errors::create_files()
   char levelname[255], responsename[255], errorname[255], classbase[255];
   char *tmp;
   int count;
-  tmp=strrchr( base, '/' );
-  if (!tmp) 
+  tmp=strrchr( (char *)base.c_str(), '/' );
+  if (!tmp)
     {
-     strcpy( class_error, base );
-     strcpy( class_level, base );
-     strcpy( class_response, base );
-     strcpy( classbase, base );
+     strcpy( class_error, base.c_str() );
+     strcpy( class_level, base.c_str() );
+     strcpy( class_response, base.c_str() );
+     strcpy( classbase, base.c_str() );
     }
-  else 
+  else
     {
       strcpy( class_error, tmp+1 );
       strcpy( class_level, tmp+1 );
@@ -105,48 +95,48 @@ int Java_Errors::create_files()
   strcat( class_error, _("Error") );
   strcat( class_level, _("ImpLevel") );
   strcat( class_response, _("Response") );
-  strcpy( errorname, base );
+  strcpy( errorname, base.c_str() );
   strcat( errorname, _("Error.java") );
-  strcpy( levelname, base );
+  strcpy( levelname, base.c_str() );
   strcat( levelname, _("ImpLevel.java") );
-  strcpy( responsename, base );
+  strcpy( responsename, base.c_str() );
   strcat( responsename, _("Response.java") );
   out_error=fopen( errorname, "wt" );
-  if (!out_error) 
+  if (!out_error)
     {
      fprintf( stderr, _("Unable to create: %s\n"), errorname );
      return( 1 );
     }
   out_level=fopen( levelname, "wt" );
-  if (!out_level) 
-    { 
+  if (!out_level)
+    {
      fprintf( stderr, _("Unable to create: %s\n"), levelname );
-     fclose( out_error ); 
-     out_error=NULL; 
-     return( 1 ); 
+     fclose( out_error );
+     out_error=NULL;
+     return( 1 );
     };
   out_response=fopen( responsename, "wt" );
-  if (!out_response) 
-    { 
+  if (!out_response)
+    {
      fprintf( stderr, _("Unable to create: %s\n"), responsename );
-     fclose( out_error ); 
+     fclose( out_error );
      fclose( out_level );
-     out_error=NULL; 
+     out_error=NULL;
      out_level=NULL;
-     return( 1 ); 
-    }; 
+     return( 1 );
+    };
   fprintf( out_response, _("package %s;\n\n/*\n This code has been automatically generated -- DO NOT EDIT\n*/\n\n"), classbase );
   fprintf( out_response, _("public class %s {\n"), class_response );
   for (count=0;count<NUM_VALID_RESPONSES;count++)
-    fprintf( out_response, _("    public static final int %-20s = %d;\n"), _(valid_responses[count]), count );
+    fprintf( out_response, _("    public static final int %-20s = %d;\n"), _(valid_responses[count].c_str()), count );
   fprintf( out_response, _("\n\n    private final void ErrorResponse() {}\n}\n") );
-  
+
   fprintf( out_level, _("package %s;\n\n/*\n This code has been automatically generated -- DO NOT EDIT\n*/\n\n"), classbase );
   fprintf( out_level, _("public class %s {\n"), class_level );
   for (count=0;count<NUM_VALID_LEVELS;count++)
-    fprintf( out_level, _("    public static final int %-20s = %d;\n"), _(valid_levels[count]), count );
+    fprintf( out_level, _("    public static final int %-20s = %d;\n"), _(valid_levels[count].c_str()), count );
   fprintf( out_level, _("\n\n    private final void ErrorImpLevel() {}\n}\n") );
-  
+
   fprintf( out_error, _("package %s;\n\nimport java.util.HashMap;\nimport commoncode.*;\n\n/*\n This code has been automatically generated -- DO NOT EDIT\n*/\n\n"), classbase );
   fprintf( out_error, _("public class %s {\n    private static HashMap errHash=null;\n"), class_error );
   return( 0 );
@@ -155,16 +145,16 @@ int Java_Errors::create_files()
 int Java_Errors::parse_errors()
 {
   int count;
-  for (count=0;count<errdef->NumberOfErrors();count++)
+  for (count=0;count<errdef.NumberOfErrors();count++)
     {
-      fprintf( out_error, _("    public static final int %-20s=%d;\n"), errdef->Name( count ), errdef->Code( count ) );      
+      fprintf( out_error, _("    public static final int %-20s=%d;\n"), errdef.Name( count ).c_str(), errdef.Code( count ) );
     }
   fprintf( out_error, _("\n\npublic static void initHashMap() {\n try {\n    errHash=new HashMap( 150 );\n") );
-  for (count=0;count<errdef->NumberOfErrors();count++)
+  for (count=0;count<errdef.NumberOfErrors();count++)
     {
       fprintf( out_error, _("    errHash.put(new Integer(%s), new ErrorObj(%s.%s, %s.%s, new String(%s)));\n"),
-	       errdef->Name( count ), class_level, errdef->Level( count ), 
-               class_response, errdef->Response( count ), errdef->Message( count ) );
+	       errdef.Name( count ).c_str(), class_level, errdef.Level( count ).c_str(),
+               class_response, errdef.Response( count ).c_str(), errdef.Message( count ).c_str() );
     }
   return( 0 );
 }
@@ -172,7 +162,7 @@ int Java_Errors::parse_errors()
 int Java_Errors::close_files()
 {
   fclose( out_response );
-  out_response=NULL; 
+  out_response=NULL;
   fclose( out_level );
   out_level=NULL;
   fprintf( out_error, _("  } catch (Exception e) {\n    errHash=null;\n  }\n}\n") );

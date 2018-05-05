@@ -22,8 +22,8 @@
 #include "errdef.h"
 /*! \brief This class will take the data as provided by the Error_Defintions class and write it to a C++ class
     \pre The Error_Definitions class must be properly intialized. The Error_Definitions class passed to it must be valid for the whole life of this class.
-    \post Two new files will be created [out_base].cpp and [out_base].h with a class with the name of [out_base]_Errors that will handle error processing and reporting. 
-    
+    \post Two new files will be created [out_base].cpp and [out_base].h with a class with the name of [out_base]_Errors that will handle error processing and reporting.
+
     This class depends on the class Error_Defintions.
  */
 class CPP_Errors
@@ -34,13 +34,13 @@ class CPP_Errors
       \post All parameters have been checked to be valid.
       \returns Nothing
    */
-  CPP_Errors( char *out_base, Error_Definitions *err );
+  CPP_Errors( const std::string & out_base, const Error_Definitions & err );
   /*! \brief The default destructor for the class.
       \pre Assumes the constructor has been called.
       \post All resources have been free'd except the Error_Definitions class passed to it.
       \returns Nothing.
    */
-  virtual ~CPP_Errors(); 
+  virtual ~CPP_Errors();
   /*! \brief Returns whether the class initialized correctly or not.
       \pre The constructor has been called.
       \post Nothing.
@@ -61,7 +61,7 @@ class CPP_Errors
       \param out_base The base name used for the file and class name generation.
       \param err The class containing the parsed error information.
    */
-  int Init( char *out_base, Error_Definitions *err );
+  int Init( const std::string & out_base, const Error_Definitions & err );
   /*! \brief Creates the two files and initialized it with the needed header information.
       \pre All parameters have been verified and the target files can be overwritten.
       \post The target files are overwritten and initialized.
@@ -84,11 +84,11 @@ class CPP_Errors
   //! Contains non-zero on successfull construction of the class.
   int installed;
   //! The object that contains the parse error defintions
-  Error_Definitions *errdef;
+  const Error_Definitions & errdef;
   //! The file handles of the output files.
   FILE *out_h, *out_cpp;
   //! The base name used for constructing the file names and the class name.
-  char base[255];
+  std::string base;
   //! The name used for the created class
   char classname[255];
 };
