@@ -20,25 +20,27 @@
  */
 
 #include "errdef.h"
-/*! \brief This class will take the data as provided by the Error_Defintions class and write it to C functions
-    \pre The Error_Definitions class must be properly intialized. The Error_Definitions class passed to it must be valid for the whole life of this class.
-    \post Two new files will be created [out_base].c and [out_base].h It will have four functions prefixed with ERROR_PREFIX
+/*! \brief This class will take the data as provided by the Error_Defintions
+   class and write it to C functions \pre The Error_Definitions class must be
+   properly intialized. The Error_Definitions class passed to it must be valid
+   for the whole life of this class. \post Two new files will be created
+   [out_base].c and [out_base].h It will have four functions prefixed with
+   ERROR_PREFIX
 
     This class depends on the class Error_Defintions.
  */
-class C_Errors
-{
- public:
+class C_Errors {
+public:
   /*! \brief The constructor for the class.
       \pre The err parameter has been properly initialized.
       \post All parameters have been checked to be valid.
       \returns Nothing
    */
-  C_Errors( const std::string & out_base, const Error_Definitions & err );
+  C_Errors(const std::string &out_base, const Error_Definitions &err);
   /*! \brief The default destructor for the class.
       \pre Assumes the constructor has been called.
-      \post All resources have been free'd except the Error_Definitions class passed to it.
-      \returns Nothing.
+      \post All resources have been free'd except the Error_Definitions class
+     passed to it. \returns Nothing.
    */
   virtual ~C_Errors();
   /*! \brief Returns whether the class initialized correctly or not.
@@ -46,30 +48,30 @@ class C_Errors
       \post Nothing.
       \returns Non-zero if the class initialized correctly.
    */
-  int isOk() { return( installed ); };
+  int isOk() { return (installed); };
   /*! \brief Processes the error codes and generate the relevant files.
       \pre The constructor initialized correctly.
       \post The files have been created.
       \returns Non-Zero on failure.
    */
   int execute();
- protected:
-  /*! \brief Called by the constructor to set all variables and test all parameters
-      \pre The err parameter has been properly initialized
-      \post The class is ready to fullfill it's function.
-      \returns Zero on failure.
-      \param out_base The base name used for the file and class name generation.
-      \param err The class containing the parsed error information.
+
+protected:
+  /*! \brief Called by the constructor to set all variables and test all
+     parameters \pre The err parameter has been properly initialized \post The
+     class is ready to fullfill it's function. \returns Zero on failure. \param
+     out_base The base name used for the file and class name generation. \param
+     err The class containing the parsed error information.
    */
   int Init();
-  /*! \brief Creates the two files and initialized it with the needed header information.
-      \pre All parameters have been verified and the target files can be overwritten.
-      \post The target files are overwritten and initialized.
+  /*! \brief Creates the two files and initialized it with the needed header
+     information. \pre All parameters have been verified and the target files
+     can be overwritten. \post The target files are overwritten and initialized.
       \return Non-zero on failure.
    */
   int create_files();
-  /*! \brief Steps through every error and fills in the two files with the relevant data.
-      \pre Assumes create_files have been successfully called.
+  /*! \brief Steps through every error and fills in the two files with the
+     relevant data. \pre Assumes create_files have been successfully called.
       \post The two files contain most of the relevant information.
       \returns Non-zero on failure.
    */
@@ -80,11 +82,12 @@ class C_Errors
       \returns Non-zero on failure.
    */
   int close_files();
- private:
+
+private:
   //! Contains non-zero on successfull construction of the class.
   int installed;
   //! The object that contains the parse error defintions
-  const Error_Definitions & errdef;
+  const Error_Definitions &errdef;
   //! The file handles of the output files.
   FILE *out_h, *out_c;
   //! The base name used for constructing the file names and the class name.

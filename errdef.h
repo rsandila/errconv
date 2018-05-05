@@ -89,13 +89,13 @@ public:
       \param index The index into the array of strings containing the data. Must be bigger than 0 and smaller than the total number of error definitions.
    */
   const std::string & Response( int index ) const;
-  /*! \brief Returns a string to the name string as specified for the index and the error definition file.
-      \pre Class syccessfully initialized.
-      \post Nothing
-      \returns String pointer to the Name string or NULL on error.
-      \param index The index into the array of strings containing the data. Must be bigger than 0 and smaller than the total number of error definitions.
+  /*! \brief Returns a string to the name string as specified for the index and
+     the error definition file. \pre Class syccessfully initialized. \post
+     Nothing \returns String pointer to the Name string or NULL on error. \param
+     index The index into the array of strings containing the data. Must be
+     bigger than 0 and smaller than the total number of error definitions.
    */
-  const std::string & Name( int index ) const;
+  const std::string &Name(int index) const;
   /*! \brief Returns the error code as specified for the index and the error definition file.
       \pre Class syccessfully initialized.
       \post Nothing
