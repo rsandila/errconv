@@ -140,10 +140,6 @@ int process_arguments(int *flag, std::string &cout, std::string &jout,
   }
   arg_counter = 0;
   *flag = ERRCONV_NO_OUT;
-  infile[0] = 0;
-  cout[0] = 0;
-  jout[0] = 0;
-  cnout[0] = 0;
   opterr = 0;
   while (1) {
     option = getopt_long(argc, argv, "", my_options, &option_index);
@@ -151,17 +147,17 @@ int process_arguments(int *flag, std::string &cout, std::string &jout,
       if (*flag == ERRCONV_NO_OUT) {
         return (show_help_and_exit(_("No output type defined."), argv[0]));
       }
-      if (infile[0] == 0) {
+      if (infile.empty()) {
         return (show_help_and_exit(_("No input file defined."), argv[0]));
       }
-      if (((*flag) & ERRCONV_C_OUT) && cout[0] == 0) {
+      if (((*flag) & ERRCONV_C_OUT) && cout.empty()) {
         return (show_help_and_exit(_("C++ base name not specified."), argv[0]));
       }
-      if (((*flag) & ERRCONV_JAVA_OUT) && jout[0] == 0) {
+      if (((*flag) & ERRCONV_JAVA_OUT) && jout.empty()) {
         return (
             show_help_and_exit(_("Java base name not specified."), argv[0]));
       }
-      if (((*flag) & ERRCONV_CN_OUT) && cnout[0] == 0) {
+      if (((*flag) & ERRCONV_CN_OUT) && cnout.empty()) {
         return (show_help_and_exit(_("C base name not specified."), argv[0]));
       }
       return (0);
