@@ -87,7 +87,6 @@ private:
   std::string base;
   //! The name used for the created class
   std::string classname;
-  // char classname[255];
 };
 
 #endif

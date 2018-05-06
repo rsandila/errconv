@@ -3,7 +3,7 @@ AC_INIT(errconv.cpp)
 
 dnl i10n
 PACKAGE=errconv
-VERSION=1.2.3
+VERSION=1.2.4
 AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE")
 AC_DEFINE_UNQUOTED(VERSION, "$VERSION")
 AC_SUBST(PACKAGE)
@@ -49,7 +49,7 @@ fi
 dnl check for getopt in standard library
 AC_SUBST(ERRCONVOBJ)
 ERRCONVOBJ="$ERRCONVOJB errconv.o errdef.o errcpp.o errjava.o errc.o"
-AC_CHECK_FUNCS(getopt_long , , [ERRCONVOBJ="$ERRCONVOBJ getopt.o getopt1.o"] ) 
+AC_CHECK_FUNCS(getopt_long , , [ERRCONVOBJ="$ERRCONVOBJ getopt.o getopt1.o"] )
 
 dnl Check for header files
 AC_HEADER_STDC

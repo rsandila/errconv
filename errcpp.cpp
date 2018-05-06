@@ -54,18 +54,14 @@ int CPP_Errors::execute() {
 
 int CPP_Errors::create_files() {
   std::string cppname, hname;
-  // char cppname[255], hname[255];
   char *tmp;
   tmp = strrchr((char *)base.c_str(), '/');
   if (!tmp) {
     classname = base;
-    // strcpy(classname, base.c_str());
   } else {
     classname = tmp + 1;
-    // strcpy(classname, tmp + 1);
   }
   classname += std::string(_("_Errors"));
-  // strcat(classname, );
   cppname = base + std::string(_(".cpp"));
   hname = base + std::string(_(".h"));
   out_cpp.reset(fopen(cppname.c_str(), "wt"));
@@ -80,7 +76,7 @@ int CPP_Errors::create_files() {
   };
   /*
   "const int" is used for the constants below rather that "const unsigned"
-  as mightt expect given the  for compatibility with Java which does not
+  as might be expect given the compatibility with Java which does not
   support unsigned. Using signed everywhere simplifies life.
   */
   fprintf(out_h.get(), _("#ifndef %s_H__\n#define %s_H__\n"), classname.c_str(), classname.c_str());

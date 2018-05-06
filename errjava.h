@@ -88,7 +88,6 @@ private:
   //! The base name used for constructing the file names and the class name.
   std::string base;
   //! The names of the three classes
-  // char class_level[255], class_response[255], class_error[255];
   std::string class_level, class_response, class_error;
 };
 

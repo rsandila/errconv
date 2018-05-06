@@ -10,11 +10,11 @@ be used to consistently handle the errors. Currently supported languages are:
  - C
 
 We use this program to generate consistent error codes and messages between
-a Java client application and a C++ server application. 
+a Java client application and a C++ server application.
 
 Version
 ~~~~~~~
-This is version 1.2.2 of the software. We have tested and are using this for
+This is version 1.2.3 of the software. We have tested and are using this for
 our own software development and have found it to work and be stable. Any
 comments, bug-fixes or additional features can be sent to the maintainer.
 
@@ -34,7 +34,7 @@ constant names for the C++ error codes.
 
 The code is pretty simple and should compile on any system using gcc.
 
-Run "configure" from the directory you installed the source into followed by 
+Run "configure" from the directory you installed the source into followed by
 "make".
 
 Documentation
@@ -48,7 +48,7 @@ Maintainer
 This project is maintained by Robert Sandilands from SecureWorx South Africa
 (Pty) Ltd. My e-mail address is rsandila@netscape.net. The Java definitions
 was done by Andries Malan from SecureWorx and his e-mail address is
-andries@secureworx.com. 
+andries@secureworx.com.
 
 Additional contributors:
 
@@ -71,9 +71,9 @@ file names.
  --jout This defines "jout-base" as used to generate the file names and
 the class names. If there are any directory names part of the path it is
 ignored when creating the class name.
- --c States that C files must be created with the name "cnout-base.h" and 
+ --c States that C files must be created with the name "cnout-base.h" and
 "cnout-base.c".
- --cnout This defines the "cnout-base" as used to generate the file names 
+ --cnout This defines the "cnout-base" as used to generate the file names
 for the C output.
 
 Generated Files
@@ -130,8 +130,8 @@ names, responses and levels and access to that.
 C
 ~
 The C files generated have four functions. They are "ERROR_PREFIXErrorCode_To_Name",
-"ERROR_PREFIXErrorCode_To_Level", "ERROR_PREFIXErrorCode_To_Response" and 
-"ERROR_PREFIXErrorCode_To_Message". ERROR_PREFIX is defined in errdef.h. The same constants 
+"ERROR_PREFIXErrorCode_To_Level", "ERROR_PREFIXErrorCode_To_Response" and
+"ERROR_PREFIXErrorCode_To_Message". ERROR_PREFIX is defined in errdef.h. The same constants
 and definitions are defined as is the case with the C++ classes. It is just not in a class
 format.
 
@@ -163,6 +163,7 @@ license.txt         - The GNU Public License applicable to this code but not
 
 Last Changed
 ~~~~~~~~~~~~
+1.2.3 - 5 May 2018 by Robert Sandilands.
 1.2.2 - 3 May 2002 by Robert Sandilands.
 1.2.1 - 28 June 2001 by Robert Sandilands and Adam Burry.
 1.2.0 - 27 June 2001 by Robert Sandilands.

@@ -152,7 +152,6 @@ private:
   //! The number of lines in the input file.
   int num_errors;
   //! The error names specified in the input file.
-  // char **error_names;
   std::vector<std::string> error_names;
   //! The error codes specified in the input file.
   std::vector<int> error_codes;
