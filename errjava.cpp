@@ -33,7 +33,7 @@
 Java_Errors::Java_Errors(const std::string &out_base,
                          const Error_Definitions &err)
     : errdef(err), base(out_base) {
-  installed = Init();
+  installed = 1;
 }
 
 Java_Errors::~Java_Errors() {
@@ -57,59 +57,49 @@ int Java_Errors::execute() {
   return (close_files());
 }
 
-int Java_Errors::Init() {
-  return (1);
-}
-
 int Java_Errors::create_files() {
-  char levelname[255], responsename[255], errorname[255], classbase[255];
+  std::string levelname, responsename, errorname, classbase;
   char *tmp;
   tmp = strrchr((char *)base.c_str(), '/');
   if (!tmp) {
-    strcpy(class_error, base.c_str());
-    strcpy(class_level, base.c_str());
-    strcpy(class_response, base.c_str());
-    strcpy(classbase, base.c_str());
+    class_error = base;
+    class_level = base;
+    class_response = base;
+    classbase = base;
   } else {
-    strcpy(class_error, tmp + 1);
-    strcpy(class_level, tmp + 1);
-    strcpy(class_response, tmp + 1);
-    strcpy(classbase, tmp + 1);
+    class_error = (tmp + 1);
+    class_level = (tmp + 1);
+    class_response = (tmp + 1);
+    classbase = (tmp + 1);
   }
-  tmp = classbase;
-  while (*tmp) {
-    *tmp = tolower(*tmp);
-    tmp += 1;
-  };
-  strcat(class_error, _("Error"));
-  strcat(class_level, _("ImpLevel"));
-  strcat(class_response, _("Response"));
-  strcpy(errorname, base.c_str());
-  strcat(errorname, _("Error.java"));
-  strcpy(levelname, base.c_str());
-  strcat(levelname, _("ImpLevel.java"));
-  strcpy(responsename, base.c_str());
-  strcat(responsename, _("Response.java"));
-  out_error.reset(fopen(errorname, "wt"));
+  std::transform(classbase.begin(), classbase.end(), classbase.begin(), ::tolower);
+  class_error += std::string(_("Error"));
+  class_level += std::string(_("ImpLevel"));
+  class_response += std::string(_("Response"));
+  errorname = base + std::string(_("Error.java"));
+  levelname = base + std::string(_("ImpLevel.java"));
+  responsename = base + std::string(_("Response.java"));
+
+  out_error.reset(fopen(errorname.c_str(), "wt"));
   if (!out_error.get()) {
-    fprintf(stderr, _("Unable to create: %s\n"), errorname);
+    fprintf(stderr, _("Unable to create: %s\n"), errorname.c_str());
     return (1);
   }
-  out_level.reset(fopen(levelname, "wt"));
+  out_level.reset(fopen(levelname.c_str(), "wt"));
   if (!out_level.get()) {
-    fprintf(stderr, _("Unable to create: %s\n"), levelname);
+    fprintf(stderr, _("Unable to create: %s\n"), levelname.c_str());
     return (1);
   };
-  out_response.reset(fopen(responsename, "wt"));
+  out_response.reset(fopen(responsename.c_str(), "wt"));
   if (!out_response.get()) {
-    fprintf(stderr, _("Unable to create: %s\n"), responsename);
+    fprintf(stderr, _("Unable to create: %s\n"), responsename.c_str());
     return (1);
   };
   fprintf(out_response.get(),
           _("package %s;\n\n/*\n This code has been automatically generated -- "
             "DO NOT EDIT\n*/\n\n"),
-          classbase);
-  fprintf(out_response.get(), _("public class %s {\n"), class_response);
+          classbase.c_str());
+  fprintf(out_response.get(), _("public class %s {\n"), class_response.c_str());
   for (int count = 0; count < NUM_VALID_RESPONSES; count++)
     fprintf(out_response.get(), _("    public static final int %-20s = %d;\n"),
             _(valid_responses[count].c_str()), count);
@@ -119,8 +109,8 @@ int Java_Errors::create_files() {
   fprintf(out_level.get(),
           _("package %s;\n\n/*\n This code has been automatically generated -- "
             "DO NOT EDIT\n*/\n\n"),
-          classbase);
-  fprintf(out_level.get(), _("public class %s {\n"), class_level);
+          classbase.c_str());
+  fprintf(out_level.get(), _("public class %s {\n"), class_level.c_str());
   for (int count = 0; count < NUM_VALID_LEVELS; count++)
     fprintf(out_level.get(), _("    public static final int %-20s = %d;\n"),
             _(valid_levels[count].c_str()), count);
@@ -130,10 +120,10 @@ int Java_Errors::create_files() {
           _("package %s;\n\nimport java.util.HashMap;\nimport "
             "commoncode.*;\n\n/*\n This code has been automatically generated "
             "-- DO NOT EDIT\n*/\n\n"),
-          classbase);
+          classbase.c_str());
   fprintf(out_error.get(),
           _("public class %s {\n    private static HashMap errHash=null;\n"),
-          class_error);
+          class_error.c_str());
   return (0);
 }
 
@@ -148,8 +138,8 @@ int Java_Errors::parse_errors() {
     fprintf(out_error.get(),
             _("    errHash.put(new Integer(%s), new ErrorObj(%s.%s, %s.%s, new "
               "String(%s)));\n"),
-            errdef.Name(count).c_str(), class_level,
-            errdef.Level(count).c_str(), class_response,
+            errdef.Name(count).c_str(), class_level.c_str(),
+            errdef.Level(count).c_str(), class_response.c_str(),
             errdef.Response(count).c_str(), errdef.Message(count).c_str());
   }
   return (0);
@@ -164,6 +154,6 @@ int Java_Errors::close_files() {
         "return ((ErrorObj)(errHash.get(new Integer(errcode)))).description;\n "
         " }\n catch (Exception e) {\n     return new String( \"Unknown Error "
         "Occured\" );\n  }\n}\n\n\nprivate %s() {\n }\n}\n"),
-      class_error);
+      class_error.c_str());
   return (0);
 }

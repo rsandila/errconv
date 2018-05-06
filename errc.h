@@ -58,13 +58,6 @@ public:
   int execute();
 
 protected:
-  /*! \brief Called by the constructor to set all variables and test all
-     parameters \pre The err parameter has been properly initialized \post The
-     class is ready to fullfill it's function. \returns Zero on failure. \param
-     out_base The base name used for the file and class name generation. \param
-     err The class containing the parsed error information.
-   */
-  int Init();
   /*! \brief Creates the two files and initialized it with the needed header
      information. \pre All parameters have been verified and the target files
      can be overwritten. \post The target files are overwritten and initialized.

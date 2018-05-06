@@ -59,13 +59,13 @@
 //--------------------------------------------------------------------------------------------------------------------
 
 //! This means no language types should be output
-#define ERRCONV_NO_OUT 0
+const unsigned ERRCONV_NO_OUT = 0;
 //! This means there should be a C++ output
-#define ERRCONV_C_OUT 1
+const unsigned ERRCONV_C_OUT = 1;
 //! This means there should be a Java output
-#define ERRCONV_JAVA_OUT 2
+const unsigned ERRCONV_JAVA_OUT = 2;
 //! This means there should be a C output
-#define ERRCONV_CN_OUT 4
+const unsigned ERRCONV_CN_OUT = 4;
 
 //--------------------------------------------------------------------------------------------------------------------
 //                             Non - class functions
@@ -129,7 +129,6 @@ int show_help_and_exit(const std::string &reason,
 int process_arguments(int & flag, std::string &cout, std::string &jout,
                       std::string &cnout, std::string &infile, int argc,
                       char **argv) {
-  int arg_counter, option, option_index;
   struct option my_options[] = {
       {"c++", 0, NULL, 1},   {"java", 0, NULL, 2}, {"cout", 1, NULL, 3},
       {"jout", 1, NULL, 4},  {"in", 1, NULL, 5},   {"c", 0, NULL, 7},
@@ -138,11 +137,11 @@ int process_arguments(int & flag, std::string &cout, std::string &jout,
   if (argc == 1) {
     return (show_help_and_exit(_("No parameters defined."), argv[0]));
   }
-  arg_counter = 0;
   flag = ERRCONV_NO_OUT;
   opterr = 0;
   while (true) {
-    option = getopt_long(argc, argv, "", my_options, &option_index);
+    int option_index;
+    int option = getopt_long(argc, argv, "", my_options, &option_index);
     if (option == -1) {
       if (flag == ERRCONV_NO_OUT) {
         return (show_help_and_exit(_("No output type defined."), argv[0]));
@@ -208,7 +207,6 @@ int process_arguments(int & flag, std::string &cout, std::string &jout,
    input file.
  */
 int main(int argc, char **argv) {
-  int result;
   int flag;
   std::string cout, jout, infile, cnout;
 
@@ -218,7 +216,7 @@ int main(int argc, char **argv) {
   textdomain(PACKAGE);
 #endif
   printf(_("%s %s compiled on %s, %s\n"), PACKAGE, VERSION, __DATE__, __TIME__);
-  result = process_arguments(flag, cout, jout, cnout, infile, argc, argv);
+  int result = process_arguments(flag, cout, jout, cnout, infile, argc, argv);
   if (result) { // Assumes error code has been printed.
     return (1);
   }
@@ -226,7 +224,6 @@ int main(int argc, char **argv) {
   Error_Definitions err_def(infile);
 
   if (!err_def.isOk()) { // Assumes error code has been printed.
-
     return (1);
   }
 

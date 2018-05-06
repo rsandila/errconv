@@ -29,7 +29,7 @@
 CPP_Errors::CPP_Errors(const std::string &out_base,
                        const Error_Definitions &err)
     : errdef(err), base(out_base) {
-  installed = Init(out_base, err);
+  installed = 1;
 }
 
 CPP_Errors::~CPP_Errors() {
@@ -37,12 +37,11 @@ CPP_Errors::~CPP_Errors() {
 }
 
 int CPP_Errors::execute() {
-  int result;
   if (!isOk()) {
     fprintf(stderr, _("Class did not initialize properly.\n"));
     return (1);
   }
-  result = create_files();
+  int result = create_files();
   if (result)
     return (result);
   result = parse_errors();
@@ -53,33 +52,30 @@ int CPP_Errors::execute() {
   return (close_files());
 }
 
-int CPP_Errors::Init(const std::string &out_base,
-                     const Error_Definitions &err) {
-  return (1);
-}
-
 int CPP_Errors::create_files() {
-  char cppname[255], hname[255];
+  std::string cppname, hname;
+  // char cppname[255], hname[255];
   char *tmp;
   tmp = strrchr((char *)base.c_str(), '/');
   if (!tmp) {
-    strcpy(classname, base.c_str());
+    classname = base;
+    // strcpy(classname, base.c_str());
   } else {
-    strcpy(classname, tmp + 1);
+    classname = tmp + 1;
+    // strcpy(classname, tmp + 1);
   }
-  strcat(classname, _("_Errors"));
-  strcpy(cppname, base.c_str());
-  strcat(cppname, _(".cpp"));
-  strcpy(hname, base.c_str());
-  strcat(hname, _(".h"));
-  out_cpp.reset(fopen(cppname, "wt"));
+  classname += std::string(_("_Errors"));
+  // strcat(classname, );
+  cppname = base + std::string(_(".cpp"));
+  hname = base + std::string(_(".h"));
+  out_cpp.reset(fopen(cppname.c_str(), "wt"));
   if (!out_cpp.get()) {
-    fprintf(stderr, _("Unable to create: %s\n"), cppname);
+    fprintf(stderr, _("Unable to create: %s\n"), cppname.c_str());
     return (1);
   }
-  out_h.reset(fopen(hname, "wt"));
+  out_h.reset(fopen(hname.c_str(), "wt"));
   if (!out_h.get()) {
-    fprintf(stderr, _("Unable to create: %s\n"), hname);
+    fprintf(stderr, _("Unable to create: %s\n"), hname.c_str());
     return (1);
   };
   /*
@@ -87,11 +83,11 @@ int CPP_Errors::create_files() {
   as mightt expect given the  for compatibility with Java which does not
   support unsigned. Using signed everywhere simplifies life.
   */
-  fprintf(out_h.get(), _("#ifndef %s_H__\n#define %s_H__\n"), classname, classname);
+  fprintf(out_h.get(), _("#ifndef %s_H__\n#define %s_H__\n"), classname.c_str(), classname.c_str());
   fprintf(out_h.get(), _("\n\n/* This file has been automatically generated -- DO "
                    "NOT EDIT */\n\n"));
   fprintf(out_h.get(), _("class %s\n{\npublic:\n  %s();\n  virtual ~%s();\n"),
-          classname, classname, classname);
+          classname.c_str(), classname.c_str(), classname.c_str());
   fprintf(out_h.get(), _("  static unsigned int ErrorCode_To_Name( int code, char "
                    "*name, int len );\n"));
   fprintf(
@@ -113,7 +109,7 @@ int CPP_Errors::create_files() {
             ERROR_PREFIX, _(valid_responses[count].c_str()), count);
   fprintf(out_h.get(), _("\n\nconst int %s_NUM_ERROR           = %d;\n\n"),
           ERROR_PREFIX, errdef.NumberOfErrors());
-  fprintf(out_cpp.get(), "#include \"%s\"\n", hname);
+  fprintf(out_cpp.get(), "#include \"%s\"\n", hname.c_str());
   fprintf(out_cpp.get(), "#include <string.h>\n\n");
   fprintf(out_cpp.get(), _("\n\n/* This file has been automatically generated -- DO "
                      "NOT EDIT */\n\n"));
@@ -158,12 +154,12 @@ int CPP_Errors::parse_errors() {
 
 int CPP_Errors::close_files() {
   fprintf(out_h.get(), _("\n\n#endif\n"));
-  fprintf(out_cpp.get(), _("%s::%s()\n{\n}\n\n"), classname, classname);
-  fprintf(out_cpp.get(), _("%s::~%s()\n{\n}\n\n"), classname, classname);
+  fprintf(out_cpp.get(), _("%s::%s()\n{\n}\n\n"), classname.c_str(), classname.c_str());
+  fprintf(out_cpp.get(), _("%s::~%s()\n{\n}\n\n"), classname.c_str(), classname.c_str());
   fprintf(out_cpp.get(),
           _("unsigned int %s::ErrorCode_To_Name( int code, char *name, int len "
             ")\n"),
-          classname);
+          classname.c_str());
   fprintf(out_cpp.get(),
           _("{\n int cnt;\n\n for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n    {\n    "
             "if (code==%sS[cnt].code)\n      {\n      if "
@@ -173,7 +169,7 @@ int CPP_Errors::close_files() {
           ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX);
   fprintf(out_cpp.get(),
           _("unsigned int %s::ErrorCode_To_Level( int code, int *level )\n"),
-          classname);
+          classname.c_str());
   fprintf(
       out_cpp.get(),
       _("{\n int cnt;\n\n for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n    {\n    if "
@@ -183,7 +179,7 @@ int CPP_Errors::close_files() {
   fprintf(
       out_cpp.get(),
       _("unsigned int %s::ErrorCode_To_Response( int code, int *response )\n"),
-      classname);
+      classname.c_str());
   fprintf(
       out_cpp.get(),
       _("{\n int cnt;\n\n for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n    {\n    if "
@@ -193,7 +189,7 @@ int CPP_Errors::close_files() {
   fprintf(out_cpp.get(),
           _("unsigned int %s::ErrorCode_To_Message( int code, char *message, "
             "int len )\n"),
-          classname);
+          classname.c_str());
   fprintf(out_cpp.get(),
           _("{\n int cnt;\n\n for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n    {\n    "
             "if (code==%sS[cnt].code)\n      {\n      if "

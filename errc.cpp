@@ -28,26 +28,19 @@
 #endif
 C_Errors::C_Errors(const std::string &out_base, const Error_Definitions &err)
     : errdef(err), base(out_base) {
-  installed = Init();
+  installed = 1;
 }
 
 C_Errors::~C_Errors() {
-  /* if (out_h)
-    fclose(out_h);
-  out_h = NULL;
-  if (out_c)
-    fclose(out_c);
-  out_c = NULL;*/
   installed = 0;
 }
 
 int C_Errors::execute() {
-  int result;
   if (!isOk()) {
     fprintf(stderr, _("Class did not initialize properly.\n"));
     return (1);
   }
-  result = create_files();
+  int result = create_files();
   if (result)
     return (result);
   result = parse_errors();
@@ -58,38 +51,30 @@ int C_Errors::execute() {
   return (close_files());
 }
 
-int C_Errors::Init() {
-  /* out_h = NULL;
-  out_c = NULL; */
-  return (1);
-}
-
 int C_Errors::create_files() {
-  char cname[255], hname[255], classname[255];
+  std::string cname, hname, classname;
   char *tmp;
   int count;
   tmp = strrchr((char *)base.c_str(), '/');
   if (!tmp) {
-    strcpy(classname, base.c_str());
+    classname = base;
   } else {
-    strcpy(classname, tmp + 1);
+    classname = (tmp + 1);
   }
-  strcat(classname, _("_Errors"));
-  strcpy(cname, base.c_str());
-  strcat(cname, _(".c"));
-  strcpy(hname, base.c_str());
-  strcat(hname, _(".h"));
-  out_c.reset(fopen(cname, "wt"));
+  classname += std::string(_("_Errors"));
+  cname = base + std::string(_(".c"));
+  hname = base + std::string(_(".h"));;
+  out_c.reset(fopen(cname.c_str(), "wt"));
   if (!out_c.get()) {
-    fprintf(stderr, _("Unable to create: %s\n"), cname);
+    fprintf(stderr, _("Unable to create: %s\n"), cname.c_str());
     return (1);
   }
-  out_h.reset(fopen(hname, "wt"));
+  out_h.reset(fopen(hname.c_str(), "wt"));
   if (!out_h.get()) {
-    fprintf(stderr, _("Unable to create: %s\n"), hname);
+    fprintf(stderr, _("Unable to create: %s\n"), hname.c_str());
     return (1);
   };
-  fprintf(out_h.get(), _("#ifndef %s_H__\n#define %s_H__\n"), classname, classname);
+  fprintf(out_h.get(), _("#ifndef %s_H__\n#define %s_H__\n"), classname.c_str(), classname.c_str());
   fprintf(out_h.get(), _("\n\n/* This file has been automatically generated -- DO "
                    "NOT EDIT */\n\n"));
   fprintf(out_h.get(),
@@ -115,7 +100,7 @@ int C_Errors::create_files() {
             _(valid_responses[count].c_str()), count);
   fprintf(out_h.get(), _("\n\n#define %s_NUM_ERROR          %d\n\n"), ERROR_PREFIX,
           errdef.NumberOfErrors());
-  fprintf(out_c.get(), _("#include \"%s\"\n"), hname);
+  fprintf(out_c.get(), _("#include \"%s\"\n"), hname.c_str());
   fprintf(out_c.get(), _("#include <string.h>\n\n"));
   fprintf(out_c.get(), _("\n\n/* This file has been automatically generated -- DO "
                    "NOT EDIT */\n\n"));
