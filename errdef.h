@@ -24,6 +24,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/*
+  This means that whenever you define a std::unique_ptr<FILE> that the following
+  method will be called when the variable goes out of scope instead of the
+  standard delete.
+*/
 namespace std
 {
   template<> struct default_delete<FILE> {
