@@ -37,15 +37,6 @@ Java_Errors::Java_Errors(const std::string &out_base,
 }
 
 Java_Errors::~Java_Errors() {
-  if (out_level)
-    fclose(out_level);
-  out_level = NULL;
-  if (out_response)
-    fclose(out_response);
-  out_response = NULL;
-  if (out_error)
-    fclose(out_error);
-  out_error = NULL;
   installed = 0;
 }
 
@@ -67,16 +58,12 @@ int Java_Errors::execute() {
 }
 
 int Java_Errors::Init() {
-  out_level = NULL;
-  out_response = NULL;
-  out_error = NULL;
   return (1);
 }
 
 int Java_Errors::create_files() {
   char levelname[255], responsename[255], errorname[255], classbase[255];
   char *tmp;
-  int count;
   tmp = strrchr((char *)base.c_str(), '/');
   if (!tmp) {
     strcpy(class_error, base.c_str());
@@ -103,69 +90,62 @@ int Java_Errors::create_files() {
   strcat(levelname, _("ImpLevel.java"));
   strcpy(responsename, base.c_str());
   strcat(responsename, _("Response.java"));
-  out_error = fopen(errorname, "wt");
-  if (!out_error) {
+  out_error.reset(fopen(errorname, "wt"));
+  if (!out_error.get()) {
     fprintf(stderr, _("Unable to create: %s\n"), errorname);
     return (1);
   }
-  out_level = fopen(levelname, "wt");
-  if (!out_level) {
+  out_level.reset(fopen(levelname, "wt"));
+  if (!out_level.get()) {
     fprintf(stderr, _("Unable to create: %s\n"), levelname);
-    fclose(out_error);
-    out_error = NULL;
     return (1);
   };
-  out_response = fopen(responsename, "wt");
-  if (!out_response) {
+  out_response.reset(fopen(responsename, "wt"));
+  if (!out_response.get()) {
     fprintf(stderr, _("Unable to create: %s\n"), responsename);
-    fclose(out_error);
-    fclose(out_level);
-    out_error = NULL;
-    out_level = NULL;
     return (1);
   };
-  fprintf(out_response,
+  fprintf(out_response.get(),
           _("package %s;\n\n/*\n This code has been automatically generated -- "
             "DO NOT EDIT\n*/\n\n"),
           classbase);
-  fprintf(out_response, _("public class %s {\n"), class_response);
-  for (count = 0; count < NUM_VALID_RESPONSES; count++)
-    fprintf(out_response, _("    public static final int %-20s = %d;\n"),
+  fprintf(out_response.get(), _("public class %s {\n"), class_response);
+  for (int count = 0; count < NUM_VALID_RESPONSES; count++)
+    fprintf(out_response.get(), _("    public static final int %-20s = %d;\n"),
             _(valid_responses[count].c_str()), count);
-  fprintf(out_response,
+  fprintf(out_response.get(),
           _("\n\n    private final void ErrorResponse() {}\n}\n"));
 
-  fprintf(out_level,
+  fprintf(out_level.get(),
           _("package %s;\n\n/*\n This code has been automatically generated -- "
             "DO NOT EDIT\n*/\n\n"),
           classbase);
-  fprintf(out_level, _("public class %s {\n"), class_level);
-  for (count = 0; count < NUM_VALID_LEVELS; count++)
-    fprintf(out_level, _("    public static final int %-20s = %d;\n"),
+  fprintf(out_level.get(), _("public class %s {\n"), class_level);
+  for (int count = 0; count < NUM_VALID_LEVELS; count++)
+    fprintf(out_level.get(), _("    public static final int %-20s = %d;\n"),
             _(valid_levels[count].c_str()), count);
-  fprintf(out_level, _("\n\n    private final void ErrorImpLevel() {}\n}\n"));
+  fprintf(out_level.get(), _("\n\n    private final void ErrorImpLevel() {}\n}\n"));
 
-  fprintf(out_error,
+  fprintf(out_error.get(),
           _("package %s;\n\nimport java.util.HashMap;\nimport "
             "commoncode.*;\n\n/*\n This code has been automatically generated "
             "-- DO NOT EDIT\n*/\n\n"),
           classbase);
-  fprintf(out_error,
+  fprintf(out_error.get(),
           _("public class %s {\n    private static HashMap errHash=null;\n"),
           class_error);
   return (0);
 }
 
 int Java_Errors::parse_errors() {
-  int count;
-  for (count = 0; count < errdef.NumberOfErrors(); count++) {
-    fprintf(out_error, _("    public static final int %-20s=%d;\n"),
+  for (int count = 0; count < errdef.NumberOfErrors(); count++) {
+    fprintf(out_error.get(), _("    public static final int %-20s=%d;\n"),
             errdef.Name(count).c_str(), errdef.Code(count));
   }
-  fprintf(out_error, _("\n\npublic static void initHashMap() {\n try {\n    "
+  fprintf(out_error.get(), _("\n\npublic static void initHashMap() {\n try {\n    "
                        "errHash=new HashMap( 150 );\n"));
-  for (count = 0; count < errdef.NumberOfErrors(); count++) {
-    fprintf(out_error,
+  for (int count = 0; count < errdef.NumberOfErrors(); count++) {
+    fprintf(out_error.get(),
             _("    errHash.put(new Integer(%s), new ErrorObj(%s.%s, %s.%s, new "
               "String(%s)));\n"),
             errdef.Name(count).c_str(), class_level,
@@ -176,20 +156,14 @@ int Java_Errors::parse_errors() {
 }
 
 int Java_Errors::close_files() {
-  fclose(out_response);
-  out_response = NULL;
-  fclose(out_level);
-  out_level = NULL;
-  fprintf(out_error,
+  fprintf(out_error.get(),
           _("  } catch (Exception e) {\n    errHash=null;\n  }\n}\n"));
   fprintf(
-      out_error,
+      out_error.get(),
       _("\n\npublic static String getErrorString(int errcode) {\n  try {\n     "
         "return ((ErrorObj)(errHash.get(new Integer(errcode)))).description;\n "
         " }\n catch (Exception e) {\n     return new String( \"Unknown Error "
         "Occured\" );\n  }\n}\n\n\nprivate %s() {\n }\n}\n"),
       class_error);
-  fclose(out_error);
-  out_error = NULL;
   return (0);
 }

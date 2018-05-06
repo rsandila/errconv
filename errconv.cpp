@@ -126,7 +126,7 @@ int show_help_and_exit(const std::string &reason,
    program. It depends on the ERRCONV_* conditional defines and the command line
    parameters as defined for this program.
  */
-int process_arguments(int *flag, std::string &cout, std::string &jout,
+int process_arguments(int & flag, std::string &cout, std::string &jout,
                       std::string &cnout, std::string &infile, int argc,
                       char **argv) {
   int arg_counter, option, option_index;
@@ -139,35 +139,35 @@ int process_arguments(int *flag, std::string &cout, std::string &jout,
     return (show_help_and_exit(_("No parameters defined."), argv[0]));
   }
   arg_counter = 0;
-  *flag = ERRCONV_NO_OUT;
+  flag = ERRCONV_NO_OUT;
   opterr = 0;
-  while (1) {
+  while (true) {
     option = getopt_long(argc, argv, "", my_options, &option_index);
     if (option == -1) {
-      if (*flag == ERRCONV_NO_OUT) {
+      if (flag == ERRCONV_NO_OUT) {
         return (show_help_and_exit(_("No output type defined."), argv[0]));
       }
       if (infile.empty()) {
         return (show_help_and_exit(_("No input file defined."), argv[0]));
       }
-      if (((*flag) & ERRCONV_C_OUT) && cout.empty()) {
+      if ((flag & ERRCONV_C_OUT) && cout.empty()) {
         return (show_help_and_exit(_("C++ base name not specified."), argv[0]));
       }
-      if (((*flag) & ERRCONV_JAVA_OUT) && jout.empty()) {
+      if ((flag & ERRCONV_JAVA_OUT) && jout.empty()) {
         return (
             show_help_and_exit(_("Java base name not specified."), argv[0]));
       }
-      if (((*flag) & ERRCONV_CN_OUT) && cnout.empty()) {
+      if ((flag & ERRCONV_CN_OUT) && cnout.empty()) {
         return (show_help_and_exit(_("C base name not specified."), argv[0]));
       }
       return (0);
     }
     switch (option) {
     case 1: // c++
-      (*flag) |= ERRCONV_C_OUT;
+      flag |= ERRCONV_C_OUT;
       break;
     case 2: // java
-      (*flag) |= ERRCONV_JAVA_OUT;
+      flag |= ERRCONV_JAVA_OUT;
       break;
     case 3: // cout
       cout = optarg;
@@ -181,7 +181,7 @@ int process_arguments(int *flag, std::string &cout, std::string &jout,
     case 6: // help
       return (show_help_and_exit(NULL, argv[0]));
     case 7: // c
-      (*flag) |= ERRCONV_CN_OUT;
+      flag |= ERRCONV_CN_OUT;
       break;
     case 8: // cnout
       cnout = optarg;
@@ -218,7 +218,7 @@ int main(int argc, char **argv) {
   textdomain(PACKAGE);
 #endif
   printf(_("%s %s compiled on %s, %s\n"), PACKAGE, VERSION, __DATE__, __TIME__);
-  result = process_arguments(&flag, cout, jout, cnout, infile, argc, argv);
+  result = process_arguments(flag, cout, jout, cnout, infile, argc, argv);
   if (result) { // Assumes error code has been printed.
     return (1);
   }

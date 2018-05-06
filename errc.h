@@ -29,6 +29,7 @@
 
     This class depends on the class Error_Defintions.
  */
+
 class C_Errors {
 public:
   /*! \brief The constructor for the class.
@@ -89,7 +90,7 @@ private:
   //! The object that contains the parse error defintions
   const Error_Definitions &errdef;
   //! The file handles of the output files.
-  FILE *out_h, *out_c;
+  std::unique_ptr<FILE> out_h, out_c;
   //! The base name used for constructing the file names and the class name.
   std::string base;
 };

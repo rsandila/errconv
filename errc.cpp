@@ -27,17 +27,17 @@
 #define _(str) str
 #endif
 C_Errors::C_Errors(const std::string &out_base, const Error_Definitions &err)
-    : base(out_base), errdef(err) {
+    : errdef(err), base(out_base) {
   installed = Init();
 }
 
 C_Errors::~C_Errors() {
-  if (out_h)
+  /* if (out_h)
     fclose(out_h);
   out_h = NULL;
   if (out_c)
     fclose(out_c);
-  out_c = NULL;
+  out_c = NULL;*/
   installed = 0;
 }
 
@@ -59,8 +59,8 @@ int C_Errors::execute() {
 }
 
 int C_Errors::Init() {
-  out_h = NULL;
-  out_c = NULL;
+  /* out_h = NULL;
+  out_c = NULL; */
   return (1);
 }
 
@@ -79,132 +79,122 @@ int C_Errors::create_files() {
   strcat(cname, _(".c"));
   strcpy(hname, base.c_str());
   strcat(hname, _(".h"));
-  out_c = fopen(cname, "wt");
-  if (!out_c) {
+  out_c.reset(fopen(cname, "wt"));
+  if (!out_c.get()) {
     fprintf(stderr, _("Unable to create: %s\n"), cname);
     return (1);
   }
-  out_h = fopen(hname, "wt");
-  if (!out_h) {
+  out_h.reset(fopen(hname, "wt"));
+  if (!out_h.get()) {
     fprintf(stderr, _("Unable to create: %s\n"), hname);
-    fclose(out_c);
-    out_c = NULL;
     return (1);
   };
-  fprintf(out_h, _("#ifndef %s_H__\n#define %s_H__\n"), classname, classname);
-  fprintf(out_h, _("\n\n/* This file has been automatically generated -- DO "
+  fprintf(out_h.get(), _("#ifndef %s_H__\n#define %s_H__\n"), classname, classname);
+  fprintf(out_h.get(), _("\n\n/* This file has been automatically generated -- DO "
                    "NOT EDIT */\n\n"));
-  fprintf(out_h,
+  fprintf(out_h.get(),
           _("  int %sErrorCode_To_Name( int code, char *name, int len );\n"),
           ERROR_PREFIX);
-  fprintf(out_h, _("  int %sErrorCode_To_Level( int code, int *level );\n"),
+  fprintf(out_h.get(), _("  int %sErrorCode_To_Level( int code, int *level );\n"),
           ERROR_PREFIX);
-  fprintf(out_h,
+  fprintf(out_h.get(),
           _("  int %sErrorCode_To_Response( int code, int *response );\n"),
           ERROR_PREFIX);
-  fprintf(out_h,
+  fprintf(out_h.get(),
           _("  int %sErrorCode_To_Message( int code, char *message, int len "
             ");\n\n\n"),
           ERROR_PREFIX);
-  fprintf(out_h, _("struct error_defs\n{\n int code;\n char *name;\n int "
+  fprintf(out_h.get(), _("struct error_defs\n{\n int code;\n char *name;\n int "
                    "level;\n int response;\n char *message;\n};\n\n"));
   for (count = 0; count < NUM_VALID_LEVELS; count++)
-    fprintf(out_h, _("#define %s_LEVEL_%-20s       0x0%08X\n"), ERROR_PREFIX,
+    fprintf(out_h.get(), _("#define %s_LEVEL_%-20s       0x0%08X\n"), ERROR_PREFIX,
             _(valid_levels[count].c_str()), count);
-  fprintf(out_h, "\n");
+  fprintf(out_h.get(), "\n");
   for (count = 0; count < NUM_VALID_RESPONSES; count++)
-    fprintf(out_h, _("#define %s_RESPONSE_%-20s    0x0%08X\n"), ERROR_PREFIX,
+    fprintf(out_h.get(), _("#define %s_RESPONSE_%-20s    0x0%08X\n"), ERROR_PREFIX,
             _(valid_responses[count].c_str()), count);
-  fprintf(out_h, _("\n\n#define %s_NUM_ERROR          %d\n\n"), ERROR_PREFIX,
+  fprintf(out_h.get(), _("\n\n#define %s_NUM_ERROR          %d\n\n"), ERROR_PREFIX,
           errdef.NumberOfErrors());
-  fprintf(out_c, _("#include \"%s\"\n"), hname);
-  fprintf(out_c, _("#include <string.h>\n\n"));
-  fprintf(out_c, _("\n\n/* This file has been automatically generated -- DO "
+  fprintf(out_c.get(), _("#include \"%s\"\n"), hname);
+  fprintf(out_c.get(), _("#include <string.h>\n\n"));
+  fprintf(out_c.get(), _("\n\n/* This file has been automatically generated -- DO "
                    "NOT EDIT */\n\n"));
   return (0);
 }
 
 int C_Errors::parse_errors() {
-  int cnt1, cnt2, result;
-  int code, level, response;
-  std::string name, message, tmp;
-
-  fprintf(out_c, _("struct error_defs %sS[%d]=\n{\n"), ERROR_PREFIX,
+  fprintf(out_c.get(), _("struct error_defs %sS[%d]=\n{\n"), ERROR_PREFIX,
           errdef.NumberOfErrors());
-  for (cnt1 = 0; cnt1 < errdef.NumberOfErrors(); cnt1++) {
-    code = errdef.Code(cnt1);
+  for (int cnt1 = 0; cnt1 < errdef.NumberOfErrors(); cnt1++) {
+    int code = errdef.Code(cnt1);
     if (code == -1) {
     }
-    name = errdef.Name(cnt1);
-    tmp = errdef.Level(cnt1);
-    response = -1;
-    level = -1;
-    for (cnt2 = 0; cnt2 < NUM_VALID_LEVELS; cnt2++)
+    std::string name = errdef.Name(cnt1);
+    std::string tmp = errdef.Level(cnt1);
+    int response = -1;
+    int level = -1;
+    for (int cnt2 = 0; cnt2 < NUM_VALID_LEVELS; cnt2++)
       if (tmp == _(valid_levels[cnt2].c_str()))
         level = cnt2;
     if (level == -1) {
     }
     tmp = errdef.Response(cnt1);
-    for (cnt2 = 0; cnt2 < NUM_VALID_RESPONSES; cnt2++)
+    for (int cnt2 = 0; cnt2 < NUM_VALID_RESPONSES; cnt2++)
       if (tmp == _(valid_responses[cnt2].c_str()))
         response = cnt2;
     if (response == -1) {
     }
-    message = errdef.Message(cnt1);
-    fprintf(out_h, _("#define %s_%-20s        0x%08X\n"), ERROR_PREFIX,
+    std::string message = errdef.Message(cnt1);
+    fprintf(out_h.get(), _("#define %s_%-20s        0x%08X\n"), ERROR_PREFIX,
             name.c_str(), code);
-    fprintf(out_c, _("   { %d, \"%s\", %d, %d, %s }"), code, name.c_str(),
+    fprintf(out_c.get(), _("   { %d, \"%s\", %d, %d, %s }"), code, name.c_str(),
             level, response, message.c_str());
     if ((cnt1 + 1) < errdef.NumberOfErrors())
-      fprintf(out_c, ",\n");
+      fprintf(out_c.get(), ",\n");
     else
-      fprintf(out_c, "\n");
+      fprintf(out_c.get(), "\n");
   }
-  fprintf(out_c, "};\n\n\n");
+  fprintf(out_c.get(), "};\n\n\n");
   return (0);
 }
 
 int C_Errors::close_files() {
-  fprintf(out_h, _("\n\n#endif\n"));
-  fprintf(out_c,
+  fprintf(out_h.get(), _("\n\n#endif\n"));
+  fprintf(out_c.get(),
           _("int %sErrorCode_To_Name( int code, char *name, int len )\n"),
           ERROR_PREFIX);
-  fprintf(out_c,
+  fprintf(out_c.get(),
           _("{\n int cnt;\n\n for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n    {\n    "
             "if (code==%sS[cnt].code)\n      {\n      if "
             "(strlen(%sS[cnt].name)+1>len) return( 1 );\n      strcpy( name, "
             "%sS[cnt].name );\n      return( 0 );\n      }\n    }\n  "
             "return(1);\n}\n\n"),
           ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX);
-  fprintf(out_c, _("int %sErrorCode_To_Level( int code, int *level )\n"),
+  fprintf(out_c.get(), _("int %sErrorCode_To_Level( int code, int *level )\n"),
           ERROR_PREFIX);
   fprintf(
-      out_c,
+      out_c.get(),
       _("{\n int cnt;\n\n for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n    {\n    if "
         "(code==%sS[cnt].code)\n      {\n       *level=%sS[cnt].level;\n      "
         "return( 0 );\n      }\n    }\n  return(1);\n}\n\n"),
       ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX);
-  fprintf(out_c, _("int %sErrorCode_To_Response( int code, int *response )\n"),
+  fprintf(out_c.get(), _("int %sErrorCode_To_Response( int code, int *response )\n"),
           ERROR_PREFIX);
   fprintf(
-      out_c,
+      out_c.get(),
       _("{\n int cnt;\n\n for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n    {\n    if "
         "(code==%sS[cnt].code)\n      {\n       *response=%sS[cnt].response;\n "
         "     return( 0 );\n      }\n    }\n  return(1);\n}\n\n"),
       ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX);
-  fclose(out_h);
-  fprintf(out_c,
+  fprintf(out_c.get(),
           _("int %sErrorCode_To_Message( int code, char *message, int len )\n"),
           ERROR_PREFIX);
-  fprintf(out_c,
+  fprintf(out_c.get(),
           _("{\n int cnt;\n\n for (cnt=0;cnt<%s_NUM_ERROR;cnt++)\n    {\n    "
             "if (code==%sS[cnt].code)\n      {\n      if "
             "(strlen(%sS[cnt].message)+1>len) return( 1 );\n      strcpy( "
             "message, %sS[cnt].message );\n      return( 0 );\n      }\n    "
             "}\n  return(1);\n}\n\n"),
           ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX, ERROR_PREFIX);
-  out_h = NULL;
-  fclose(out_c);
-  out_c = NULL;
   return (0);
 }

@@ -91,7 +91,7 @@ private:
   //! The object that contains the parse error defintions
   const Error_Definitions &errdef;
   //! The file handles of the output files.
-  FILE *out_level, *out_response, *out_error;
+  std::unique_ptr<FILE> out_level, out_response, out_error;
   //! The base name used for constructing the file names and the class name.
   std::string base;
   //! The names of the three classes

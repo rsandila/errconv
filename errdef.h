@@ -18,11 +18,18 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
+#include <memory>
 #include <string>
 #include <vector>
 #include <stdio.h>
 #include <stdlib.h>
 
+namespace std
+{
+  template<> struct default_delete<FILE> {
+    void operator()(FILE* ptr) { fclose(ptr); }
+  };
+}
 
 //! The number of error level parameters that is valid
 const unsigned NUM_VALID_LEVELS = 8;

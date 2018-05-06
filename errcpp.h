@@ -89,7 +89,7 @@ private:
   //! The object that contains the parse error defintions
   const Error_Definitions &errdef;
   //! The file handles of the output files.
-  FILE *out_h, *out_cpp;
+  std::unique_ptr<FILE> out_h, out_cpp;
   //! The base name used for constructing the file names and the class name.
   std::string base;
   //! The name used for the created class
