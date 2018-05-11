@@ -1,5 +1,4 @@
-#ifndef __ERRC_H__
-#define __ERRC_H__
+#pragma once
 
 /*
  * Copyright (C) 2001 SecureWorx South Africa (Pty) Ltd.
@@ -87,5 +86,3 @@ private:
   //! The base name used for constructing the file names and the class name.
   std::string base;
 };
-
-#endif

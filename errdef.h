@@ -1,5 +1,4 @@
-#ifndef __ERR_DEF_H__
-#define __ERR_DEF_H__
+#pragma once
 
 /*
  * Copyright (C) 2001 SecureWorx South Africa (Pty) Ltd.
@@ -162,5 +161,3 @@ private:
   //! The messages as specified in the input file.
   std::vector<std::string> messages;
 };
-
-#endif

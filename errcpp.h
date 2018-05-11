@@ -1,5 +1,4 @@
-#ifndef __ERRCPP_H__
-#define __ERRCPP_H__
+#pragma once
 
 /*
  * Copyright (C) 2001 SecureWorx South Africa (Pty) Ltd.
@@ -88,5 +87,3 @@ private:
   //! The name used for the created class
   std::string classname;
 };
-
-#endif

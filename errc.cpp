@@ -26,6 +26,7 @@
 #else
 #define _(str) str
 #endif
+
 C_Errors::C_Errors(const std::string &out_base, const Error_Definitions &err)
     : errdef(err), base(out_base) {
   installed = 1;
@@ -74,7 +75,7 @@ int C_Errors::create_files() {
     fprintf(stderr, _("Unable to create: %s\n"), hname.c_str());
     return (1);
   };
-  fprintf(out_h.get(), _("#ifndef %s_H__\n#define %s_H__\n"), classname.c_str(), classname.c_str());
+  fprintf(out_h.get(), _("#pragma once"));
   fprintf(out_h.get(), _("\n\n/* This file has been automatically generated -- DO "
                    "NOT EDIT */\n\n"));
   fprintf(out_h.get(),
@@ -144,7 +145,6 @@ int C_Errors::parse_errors() {
 }
 
 int C_Errors::close_files() {
-  fprintf(out_h.get(), _("\n\n#endif\n"));
   fprintf(out_c.get(),
           _("int %sErrorCode_To_Name( int code, char *name, int len )\n"),
           ERROR_PREFIX);

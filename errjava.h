@@ -1,5 +1,4 @@
-#ifndef __ERRJAVA_H__
-#define __ERRJAVA_H__
+#pragma once
 
 /*
  * Copyright (C) 2001 SecureWorx South Africa (Pty) Ltd.
@@ -90,5 +89,3 @@ private:
   //! The names of the three classes
   std::string class_level, class_response, class_error;
 };
-
-#endif

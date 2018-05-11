@@ -79,7 +79,7 @@ int CPP_Errors::create_files() {
   as might be expect given the compatibility with Java which does not
   support unsigned. Using signed everywhere simplifies life.
   */
-  fprintf(out_h.get(), _("#ifndef %s_H__\n#define %s_H__\n"), classname.c_str(), classname.c_str());
+  fprintf(out_h.get(), _("#pragma once"));
   fprintf(out_h.get(), _("\n\n/* This file has been automatically generated -- DO "
                    "NOT EDIT */\n\n"));
   fprintf(out_h.get(), _("class %s\n{\npublic:\n  %s();\n  virtual ~%s();\n"),
@@ -149,7 +149,6 @@ int CPP_Errors::parse_errors() {
 }
 
 int CPP_Errors::close_files() {
-  fprintf(out_h.get(), _("\n\n#endif\n"));
   fprintf(out_cpp.get(), _("%s::%s()\n{\n}\n\n"), classname.c_str(), classname.c_str());
   fprintf(out_cpp.get(), _("%s::~%s()\n{\n}\n\n"), classname.c_str(), classname.c_str());
   fprintf(out_cpp.get(),
